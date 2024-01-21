@@ -132,7 +132,7 @@ const LoginPage = () => {
           </div>
           <div className="mt-2  flex space-x-2">
             <span className="font-semibold text-gray-600">
-              Don't have an account ?
+              Don&apos;t have an account ?
             </span>
             <Link href="/signup" className="text-pink-400 font-semibold">
               Sign Up
