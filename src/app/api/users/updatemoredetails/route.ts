@@ -8,9 +8,9 @@ connect()
 export async function POST(request : NextRequest){
     try {
         const reqBody = await request.json()
-        const {username,name,bio} = reqBody
+        const {username,name,bio,pic} = reqBody
 
-        const userToBeUpdate = await User.findOneAndUpdate({username},{$set:{name,bio}})
+        const userToBeUpdate = await User.findOneAndUpdate({username},{$set:{name,bio,pic}})
 
         return NextResponse.json({message:"updated user succesfully",success:true})
         
