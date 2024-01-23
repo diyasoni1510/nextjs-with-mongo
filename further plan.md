@@ -11,6 +11,7 @@
     another table - posts,
                     likes,
                     comment,
-                    userid
+                    userid,
+                    caption
 
 Problem - same username and eamail se signup ho jaa rha

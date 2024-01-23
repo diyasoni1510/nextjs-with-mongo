@@ -10,10 +10,13 @@ import { MdOutlineGridOn } from "react-icons/md";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import { GoPerson } from "react-icons/go";
 import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 
 const ProfilePage = () => {
   const router = useRouter();
+  const [posts, setPosts] = useState([]);
   const [pic, setPic] = useState("");
+  const [userId,setUserId] = useState("")
   const [userUserName, setUserUserName] = useState([]);
   const [userName, setUserName] = useState();
   const [bio, setBio] = useState();
@@ -27,21 +30,31 @@ const ProfilePage = () => {
       const userinfo = await axios.post("/api/users/getuserfromusername", {
         username: username,
       });
+      setUserId(userinfo.data.data._id)
       setPic(userinfo.data.data.pic);
       setUserUserName(userinfo.data.data.username);
       setUserName(userinfo.data.data.name);
       setBio(userinfo.data.data.bio);
       setFollowers(userinfo.data.data.followers);
       setFollowing(userinfo.data.data.following);
-      console.log(userinfo);
+      const post = await axios.post("/api/posts/getposts",{user:userinfo.data.data._id})
+    console.log(post.data.data,userinfo.data.data._id)
+    setPosts([post.data.data][0])
     } catch (error) {
       console.log(error);
     }
   };
+  // const getAllPosts = async () => {
+  //   const post = await axios.post("/api/posts/getposts",{user:userId})
+  //   console.log(post.data.data,userId)
+  //   setPosts([post.data.data][0])
+  // }
   useEffect(() => {
     getUserFromId();
+    // getAllPosts()
   }, []);
   return (
+    <>
     <div className="block md:hidden">
       <div className="flex justify-between items-center py-4 px-2  shadow">
         <div className="flex justify-center items-center space-x-4">
@@ -67,7 +80,7 @@ const ProfilePage = () => {
         </div>
         <div className="flex w-full space-x-4 justify-center">
           <div className="text-center">
-            <p className="font-semibold">1,983</p>
+            <p className="font-semibold">{posts.length}</p>
             <p className="text-sm text-gray-500">Posts</p>
           </div>
           <div className="text-center">
@@ -105,38 +118,19 @@ const ProfilePage = () => {
         <GoPerson className="text-2xl  w-full" />
       </div>
       <div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
-          <div className="col-span-1 h-[100px] border bg-gray-100 border-black"></div>
+        <div className="flex flex-wrap">
+          { posts.map((post,index)=>{
+            return(
+              <div className="col-span-1 h-[100px] w-[120px] border  " key={index}>
+                <img src={post.post} alt="post" className="w-full object-fill h-full"></img>
+              </div>
+            )
+          }) }
         </div>
       </div>
     </div>
+    <Toaster/>
+    </>
   );
 };
 
