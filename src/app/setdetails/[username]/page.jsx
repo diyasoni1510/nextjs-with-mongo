@@ -57,7 +57,7 @@ const SetDeatil = () => {
         });
         console.log(response);
         toast.success(response.data.message);
-        // router.push(`/profilepage/${localStorage.getItem("username")}`);
+        router.push(`/profilepage/${localStorage.getItem("username")}`);
       } catch (error) {
         console.log(error);
       }
