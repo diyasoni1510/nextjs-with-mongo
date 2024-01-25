@@ -48,7 +48,7 @@ const PostSection = () => {
     <div className="mb-10">
       {allPosts && allPosts.map((post, index) => {
         return (
-          <div className="mt-2 md:border border-gray-400 rounded-md p-3 flex flex-col justify-center items-center">
+          <div className="mt-2 md:border border-gray-400 rounded-md p-3 flex flex-col justify-center items-center" key={index}>
             <div className=" w-full rounded-sm md:border border-gray-200 md:p-2">
               <div className="flex items-center justify-between mt-3">
                 <div className="flex space-x-3 md:space-x-4 items-center">
