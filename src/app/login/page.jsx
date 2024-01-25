@@ -38,8 +38,6 @@ const LoginPage = () => {
         });
       } catch (error) {
         toast.error(error.response.data.message);
-      } finally {
-        setLoading(false);
       }
     },
   });
@@ -52,6 +50,7 @@ const LoginPage = () => {
   });
   useEffect(() => {
     if (data) {
+      setLoading(false)
       router.push(`/profile/${data}`);
     }
   }, [data]);
@@ -101,7 +100,7 @@ const LoginPage = () => {
               <button
                 disabled={buttonDisabled}
                 type="submit"
-                className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition hover:bg-white hover:text-pink-400 disabled:bg-pink-300 hover:scale-95"
+                className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition disabled:bg-pink-300 "
               >
                 {loading === true && (
                   <div role="status">

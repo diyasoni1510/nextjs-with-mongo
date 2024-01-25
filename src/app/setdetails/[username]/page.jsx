@@ -1,12 +1,11 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { type } from "os";
-
+import { FiUpload } from "react-icons/fi";
 const readFileAsDataURL = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,6 +30,8 @@ const schema = Yup.object().shape({
 });
 
 const SetDeatil = () => {
+  const inputFileRef  = useRef()
+  const [buttonDisabled,setButtonDisabled] = useState(true)
   const pathname = usePathname();
   const username = pathname.split("setdetails/").pop();
   const router = useRouter();
@@ -59,29 +60,44 @@ const SetDeatil = () => {
         toast.success(response.data.message);
         router.push(`/profilepage/${localStorage.getItem("username")}`);
       } catch (error) {
-        console.log(error);
+        toast.error("image size is too big")
+        console.log("line 62",error);
       }
     },
   });
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+  useEffect(()=>{
+    if(values.pic !== "" && values.name !== "" && values.bio !== "")
+    setButtonDisabled(false)
+  })
   return (
     <>
       <div className="flex justify-center items-center h-screen w-screen">
         <div className="w-11/12 h-fit shadow-md p-4">
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
-            <div className="flex flex-col space-y-2">
+          <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center space-y-5">
+            <div className="flex flex-col justify-center items-center space-y-2">
               <label htmlFor="pic">Profile photo</label>
               <input
                 type="file"
                 name="pic"
                 id="pic"
-                className="outline-none"
+                className="hidden"
                 placeholder="Your name"
-                accept="image/*"
                 onChange={(e) => {
                   formik.setFieldValue("pic", e.currentTarget.files[0]);
                 }}
+                ref={inputFileRef}
               />
+              <button
+                type="button"
+                className="w-[70px] h-[70px] rounded-full bg-gray-200 flex justify-center items-center"
+                onClick={() => {
+                  inputFileRef.current.click();
+                }}
+              >
+                <FiUpload className="text-3xl text-gray-400" />
+              </button>
+              {values.pic ? values.pic.name : ""}
             </div>
             <div className="flex flex-col space-y-2">
               <label htmlFor="name">Name</label>
@@ -121,8 +137,9 @@ const SetDeatil = () => {
               </div> */}
             <div className="flex justify-between">
               <button
+              disabled={buttonDisabled}
                 type="submit"
-                className="bg-pink-300 text-white font-semibold py-1 px-4 rounded-md"
+                className="bg-pink-400 text-white font-semibold py-1 px-4 rounded-md disabled:bg-pink-300"
               >
                 Submit
               </button>

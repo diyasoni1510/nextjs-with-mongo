@@ -22,6 +22,7 @@ const ProfilePage = () => {
   const [bio, setBio] = useState();
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [edit,setEdit] = useState(false)
 
   const pathname = usePathname();
   const username = pathname.split("page/").pop();
@@ -56,7 +57,7 @@ const ProfilePage = () => {
   return (
     <>
     <div className="block md:hidden">
-      <div className="flex justify-between items-center py-4 px-2  shadow">
+      <div className="flex justify-between items-center py-4 px-2  shadow relative">
         <div className="flex justify-center items-center space-x-4">
           <button
             onClick={() => {
@@ -67,16 +68,21 @@ const ProfilePage = () => {
           </button>
           <p className="font-semibold">{userUserName ? userUserName : ""}</p>
         </div>
-        <div className="flex justify-center items-center space-x-4">
-          <HiDotsVertical className="text-2xl" />
+        <div className="flex flex-col justify-center items-center space-x-4 ">
+          <HiDotsVertical className="text-2xl" onClick={()=>edit === true ? setEdit(false) : setEdit(true)} />
+          { edit === true && 
+          <div className="cursor-pointer absolute top-12 border right-0 bg-white p-2"><Link href={`/setdetails/${localStorage.getItem("username")}`}>Edit profile</Link></div>
+          }
         </div>
       </div>
       <div className="px-2 flex items-center pt-5">
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 w-[60px] h-[60px]">
+          { pic !== "" && 
           <img
-            src={pic && pic}
-            className="w-[60px] h-[60px] rounded-full object-cover ring-1 ring-pink-400 ring-offset-2"
-          ></img>
+          src={pic && pic}
+          className=" h-full w-full rounded-full object-cover ring-1 ring-pink-400 ring-offset-2"
+        ></img>
+          }
         </div>
         <div className="flex w-full space-x-4 justify-center">
           <div className="text-center">

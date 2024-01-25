@@ -5,26 +5,33 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
+import Link from "next/link";
 
 const SearchPage = () => {
   const router = useRouter();
+  const [loading,setLoading] = useState(false)
   const [allUsers, setAllUsers] = useState([]);
-  const [searchVal,setSearchVal] = useState("")
+  const [searchVal, setSearchVal] = useState("");
+  const [searchedUser, setSearchedUser] = useState(null);
+  const [searchedUserName, setSearchedUserName] = useState(null);
 
-  const searchUser = async () =>{
+  const searchUser = async () => {
     try {
-        const response = await axios.post("/api/users/searchuser",{username:searchVal})
-        console.log(response)
-        router.push(`/profilepage/${response.data.data.username}`)
+      setLoading(true)
+      const response = await axios.post("/api/users/searchuser", {
+        username: searchVal,
+      });
+      setLoading(false)
+      setSearchedUser(response.data.data.username);
+      setSearchedUserName(response.data.data.name);
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const getAllUsers = async () => {
     try {
       const response = await axios.get("/api/users/allusers");
-      console.log(response.data.data);
       setAllUsers(response.data.data);
     } catch (error) {
       console.log(error);
@@ -57,7 +64,9 @@ const SearchPage = () => {
               placeholder="Search..."
               className="text-sm bg-transparent outline-none w-full"
               value={searchVal}
-              onChange={(e)=>{setSearchVal(e.target.value)}}
+              onChange={(e) => {
+                setSearchVal(e.target.value);
+              }}
             />
           </div>
           <div>
@@ -66,7 +75,7 @@ const SearchPage = () => {
         </div>
 
         <div className="all-users-list p-2">
-          {allUsers.map((user, id) => {
+          {/* {allUsers.map((user, id) => {
             return (
               <div className="flex space-x-3 mb-2" key={user._id}>
                 <div>
@@ -78,7 +87,28 @@ const SearchPage = () => {
                 </div>
               </div>
             );
-          })}
+          })} */}
+          { loading && <> <div className="bg-gray-100 h-[50px] w-full rounded-md mb-3"></div>
+          <div className="bg-gray-100 h-[50px] w-full rounded-md mb-3"></div>
+          <div className="bg-gray-100 h-[50px] w-full rounded-md mb-3"></div>
+          <div className="bg-gray-100 h-[50px] w-full rounded-md mb-3"></div>
+          <div className="bg-gray-100 h-[50px] w-full rounded-md mb-3"></div> </>}
+
+          {searchedUser !== null && (
+            <Link href={`/profilepage/${searchedUser}`}>
+            <div className="flex space-x-3 mb-2">
+              <div>
+                <img src="/images/user-dp.png" className="w-12"></img>
+              </div>
+              <div className="text-sm">
+                <p>{searchedUser ? searchedUser : ""}</p>
+                <p className=" text-gray-500">
+                  {searchedUserName ? searchedUserName : "name"}
+                </p>
+              </div>
+            </div>
+            </Link>
+          )}
         </div>
       </div>
       <ProfileFooter />
