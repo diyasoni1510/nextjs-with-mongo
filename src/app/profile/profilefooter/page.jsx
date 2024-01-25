@@ -62,13 +62,11 @@ const ProfileFooter = () => {
     onSubmit: async ({ post, caption }) => {
       setLoading(true);
       const base64String = await readFileAsDataURL(post);
-      const userId = await axios.post("/api/users/getuserfromusername", {
-        username: localStorage.getItem("username"),
-      });
       const uploadPost = await axios.post("/api/users/uploadpost", {
         post: base64String,
         caption,
-        user: userId.data.data._id,
+        userId: localStorage.getItem("userId"),
+        username :localStorage.getItem("username")
       });
       setLoading(false);
       setIsUpload(false);

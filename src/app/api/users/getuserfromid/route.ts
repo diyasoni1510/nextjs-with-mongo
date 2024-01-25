@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+import User from "@/models/userModal";
 import connect from "@/dbConfig/dbConfig";
-import Post from "@/models/postModel";
 
 
 connect();
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await request.json();
-    const userPost = await Post.find({ userId });
-    if (userPost) return NextResponse.json({ message: "post found", data: userPost });
+    const { _id } = await request.json();
+    const user = await User.findOne({ _id });
+    if (user) return NextResponse.json({ message: "user found", data: user });
     else
       return NextResponse.json(
-        { message: "post does not exist" },
+        { message: "user does not exist" },
         { status: 400 }
       );
   } catch (error: any) {

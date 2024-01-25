@@ -38,18 +38,13 @@ const ProfilePage = () => {
       setBio(userinfo.data.data.bio);
       setFollowers(userinfo.data.data.followers);
       setFollowing(userinfo.data.data.following);
-      const post = await axios.post("/api/posts/getposts",{user:userinfo.data.data._id})
-    console.log(post.data.data,userinfo.data.data._id)
+      const post = await axios.post("/api/posts/getposts",{userId:userinfo.data.data._id})
+    console.log(post.data.data)
     setPosts([post.data.data][0])
     } catch (error) {
       console.log(error);
     }
   };
-  // const getAllPosts = async () => {
-  //   const post = await axios.post("/api/posts/getposts",{user:userId})
-  //   console.log(post.data.data,userId)
-  //   setPosts([post.data.data][0])
-  // }
   useEffect(() => {
     getUserFromId();
     // getAllPosts()

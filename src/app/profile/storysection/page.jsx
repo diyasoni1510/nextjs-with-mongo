@@ -1,72 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 
 
-const userStory = [
-  {
-    pic: "/images/users/user-1.jpg",
-    id: "user-1",
-  },
-  {
-    pic: "/images/users/user-2.jpg",
-    id: "user-2",
-  },
-  {
-    pic: "/images/users/user-3.jpg",
-    id: "user-3",
-  },
-  {
-    pic: "/images/users/user-4.jpg",
-    id: "user-4",
-  },
-  {
-    pic: "/images/users/user-5.jpg",
-    id: "user-5",
-  },
-  {
-    pic: "/images/users/user-6.jpg",
-    id: "user-6",
-  },
-  {
-    pic: "/images/users/user-7.webp",
-    id: "user-7",
-  },
-  {
-    pic: "/images/users/user-8.webp",
-    id: "user-8",
-  },
-  {
-    pic: "/images/users/user-9.jpeg",
-    id: "user-9",
-  },
-  {
-    pic: "/images/users/user-10.jpg",
-    id: "user-10",
-  },
-  {
-    pic: "/images/users/user-11.avif",
-    id: "user-11",
-  },
-];
-
 const StorySection = () => {
   const [openModal, setopenModal] = useState(null);
+  const [allUsers,setAllUsers] = useState([])
+
+  const getAllUsers = async() =>{
+    try {
+    const response = await axios.get("/api/users/allusers")
+      console.log(response.data.data)
+      setAllUsers([response.data.data][0])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getAllUsers()
+  },[])
+
   return (
     <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md overflow-x-scroll">
       <div className="flex p-3 space-x-6">
-        {userStory.map((user) => {
+        {allUsers && allUsers.map((user) => {
           return (
-            <div key={user.id}>
+            <div key={user._id}>
               <div
                 className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat cursor-pointer "
                 style={{ backgroundImage: `url(${user.pic})` }}
-                id={user.id}
-                onClick={() => setopenModal(user.id)}
+                id={user._id}
+                onClick={() => setopenModal(user._id)}
               ></div>
-              {openModal === user.id && (
+              {openModal === user._id && (
                 <dialog
-                  id={user.id}
+                  id={user._id}
                   className="modal z-40 w-full flex justify-center  bg-black bg-opacity-50 h-screen absolute top-0 md:top-[-40px]"
                 >
                   <div className="modal-box">
