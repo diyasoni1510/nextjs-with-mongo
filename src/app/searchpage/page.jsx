@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
 const SearchPage = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const SearchPage = () => {
   const [searchVal, setSearchVal] = useState("");
   const [searchedUser, setSearchedUser] = useState(null);
   const [searchedUserName, setSearchedUserName] = useState(null);
+  const [searchedUserPic,setSearchedUserPic] = useState("")
 
   const searchUser = async () => {
     try {
@@ -24,8 +26,11 @@ const SearchPage = () => {
       setLoading(false)
       setSearchedUser(response.data.data.username);
       setSearchedUserName(response.data.data.name);
+      setSearchedUserPic(response.data.data.pic)
     } catch (error) {
-      console.log(error);
+      setLoading(false)
+      toast.error(error.response.data.message)
+      console.log(error.response.data.message);
     }
   };
 
@@ -34,6 +39,7 @@ const SearchPage = () => {
       const response = await axios.get("/api/users/allusers");
       setAllUsers(response.data.data);
     } catch (error) {
+      toast.error(error.message)
       console.log(error);
       console.log(error.mesage);
     }
@@ -97,8 +103,8 @@ const SearchPage = () => {
           {searchedUser !== null && (
             <Link href={`/profilepage/${searchedUser}`}>
             <div className="flex space-x-3 mb-2">
-              <div>
-                <img src="/images/user-dp.png" className="w-12"></img>
+              <div className="w-[40px] h-[40px] ">
+                <img src={searchedUserPic} className="w-full h-full object-cover rounded-full"></img>
               </div>
               <div className="text-sm">
                 <p>{searchedUser ? searchedUser : ""}</p>
@@ -112,6 +118,7 @@ const SearchPage = () => {
         </div>
       </div>
       <ProfileFooter />
+      <Toaster/>
     </>
   );
 };
