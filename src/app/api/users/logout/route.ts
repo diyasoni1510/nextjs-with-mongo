@@ -6,7 +6,7 @@ export async function GET() {
             message:"Logout successfull",
             success:true
         })
-        response.cookies.set("userToken","",{httpOnly:true})
+        response.cookies.set("userToken","")
         return response
     } catch (error:any) {
         return NextResponse.json({error:error.messae},{status:500})
