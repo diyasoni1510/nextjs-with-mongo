@@ -47,8 +47,8 @@ const PostSection = () => {
   return (
     <div className="mb-10">
       {allPosts && allPosts.map((post, index) => {
-        const response  =  axios.post("/api/users/getuserfromusername",{username:post.username})
-        console.log(response)
+        // const response  =  axios.post("/api/users/getuserfromusername",{username:post.username})
+        // console.log(response)
         return (
           <div className="mt-2 md:border border-gray-400 rounded-md p-3 flex flex-col justify-center items-center" key={index}>
             <div className=" w-full rounded-sm md:border border-gray-200 md:p-2">
@@ -57,7 +57,7 @@ const PostSection = () => {
                   <div
                     className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat"
                   >
-                    <img src={response.data.data.pic}></img>
+                    <img src=""></img>
                   </div>
                   <div>
                     <Link href="/UserProfile" className="font-semibold">
