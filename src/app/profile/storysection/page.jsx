@@ -7,12 +7,15 @@ import { ImCross } from "react-icons/im";
 const StorySection = () => {
   const [openModal, setopenModal] = useState(null);
   const [allUsers,setAllUsers] = useState([])
+  const [loading,setLoading] = useState(false)
 
   const getAllUsers = async() =>{
     try {
+      setLoading(true)
     const response = await axios.get("/api/users/allusers")
       console.log(response.data.data)
       setAllUsers([response.data.data][0])
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -22,8 +25,9 @@ const StorySection = () => {
   },[])
 
   return (
-    <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md overflow-x-scroll">
-      <div className="flex p-3 space-x-6">
+    <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md ">
+      <div className="flex p-3 space-x-6 overflow-x-scroll">
+        { loading && <><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div></> }
         {allUsers && allUsers.map((user) => {
           return (
             <div key={user._id}>
