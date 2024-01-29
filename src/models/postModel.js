@@ -9,7 +9,7 @@ const postSchema = new mongoose.Schema({
   likes: [{ type: String}],
   comments: [
     {
-      type: String,
+      user: String,
       comment: String,
       createdAt: { type: Date, default: Date.now },
     },

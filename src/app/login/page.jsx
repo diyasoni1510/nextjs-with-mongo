@@ -30,9 +30,10 @@ const LoginPage = () => {
           username,
           password,
         });
-        const userId = await axios.post("/api/users/getuserfromusername",{username})
+        const user = await axios.post("/api/users/getuserfromusername",{username})
         localStorage.setItem("username", username);
-        localStorage.setItem("userId",userId.data.data._id)
+        console.log("user ",user.data.data)
+        localStorage.setItem("user",JSON.stringify(user.data.data))
         await axios.get("/api/users/userprofile").then((res) => {
           setData(res.data.data.username);
         });
