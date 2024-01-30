@@ -21,9 +21,9 @@ const PostSection = () => {
   const [showComments, setShowComments] = useState("");
   const [postSentTo,setPostSentTo] = useState("")
   const [comment,setComment] = useState("")
+  const [islike,setIsLike] = useState()
 
-  const { data:allPosts, error:postError } = useSWR('/api/posts/getallposts', fetcher,{ revalidateOnFocus: false, // Do not revalidate on window focus
-  revalidateOnReconnect: false,})
+  const { data:allPosts, error:postError } = useSWR('/api/posts/getallposts', fetcher)
   const { data:allUsers, error:userError } = useSWR('/api/users/allusers', fetcher)
 
 

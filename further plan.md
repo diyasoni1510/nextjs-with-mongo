@@ -18,3 +18,6 @@ Problem - same username and eamail se signup ho jaa rha
 
 
 29 jan 2024 - make a userpic filed in comment array and show pics with every comment
+
+
+im making an insta clone in which i have posts so when i post and refresh the page it gives me 304 status and doesnt add the newly posted post.....im making the getposts api call via swr in next js project like this const { data:allPosts, error:postError } = useSWR('/api/posts/getallposts', fetcher)
