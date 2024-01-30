@@ -10,7 +10,7 @@ import { FiUpload } from "react-icons/fi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import useSWR from "swr";
+import {mutate} from "swr";
 import toast, { Toaster } from "react-hot-toast";
 
 const fetcher = (...args) =>
@@ -83,6 +83,7 @@ const ProfileFooter = () => {
       setLoading(false);
       setIsUpload(false);
       toast.success("Post uploaded successfully");
+      mutate('/api/posts/getallposts');
     },
   });
   const { errors, touched, values, handleChange, handleSubmit } = formik;
