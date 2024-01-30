@@ -12,7 +12,7 @@ import { MdGif } from "react-icons/md";
 import Link from "next/link";
 import { toast, Toaster } from "react-hot-toast";
 import axios from "axios";
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -42,7 +42,8 @@ const PostSection = () => {
   const updateLikes = async(_id,like,add) => {
     console.log(_id,like)
     const response = await axios.post("/api/posts/updatelike",{_id,like,add})
-    console.log(response)
+    toast.success("Post like")
+    mutate('/api/posts/getallposts');
   }
 
   const sendComment = async(e,postId) => {
@@ -103,7 +104,7 @@ const PostSection = () => {
 
                 <div className="post-icons flex justify-between items-center mt-3 md:px-2">
                   <div className="flex space-x-4">
-                    {post.likes.includes(localStorage.getItem("username")) === false ? (
+                    {post.likes.includes(localStorage.getItem("username")) === false || islike === false ? (
                       <FaRegHeart
                         className="text-2xl md:text-3xl"
                         onClick={() => {
