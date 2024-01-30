@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import { IoPersonAddOutline } from "react-icons/io5";
-import { HiDotsHorizontal } from "react-icons/hi";
 import { IoIosArrowBack } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
 import { MdOutlineGridOn } from "react-icons/md";
@@ -11,6 +10,9 @@ import { MdOutlineOndemandVideo } from "react-icons/md";
 import { GoPerson } from "react-icons/go";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
+import useSWR from "swr";
+
+const fetcher = (...args) => fetch(...args).then((res)=>res.json())
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -23,6 +25,11 @@ const ProfilePage = () => {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [edit,setEdit] = useState(false)
+
+  // const { data , error } = useSWR('/api/users/getuserfromusername',fetcher)
+  // if(error) return <div>Failed to load</div>
+  // if(!data) return <div>Loading...</div>
+  // if(data) console.log(data)
 
   const pathname = usePathname();
   const username = pathname.split("page/").pop();
