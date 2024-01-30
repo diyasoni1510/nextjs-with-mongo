@@ -31,8 +31,8 @@ const ProfileFooter = () => {
   const pathname = usePathname();
   const username = pathname.split("profile/").pop();
   const [footerSlider, openFooterSlider] = useState(false);
-  const storedUserInfo = localStorage.getItem("user");
-  const userInfo = JSON.parse(storedUserInfo);
+  // const storedUserInfo = localStorage.getItem("user")
+  // const userInfo = JSON.parse(localStorage.getItem("user"));
   const logout = async () => {
     try {
       setLogoutLoading(true);
@@ -77,7 +77,7 @@ const ProfileFooter = () => {
       const uploadPost = await axios.post("/api/users/uploadpost", {
         post: base64String,
         caption,
-        userId: userInfo._id,
+        userId: JSON.parse(localStorage.getItem("user"))._id,
         username: localStorage.getItem("username"),
       });
       setLoading(false);
