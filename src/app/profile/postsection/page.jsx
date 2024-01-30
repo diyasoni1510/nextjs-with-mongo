@@ -12,33 +12,31 @@ import { MdGif } from "react-icons/md";
 import Link from "next/link";
 import { toast, Toaster } from "react-hot-toast";
 import axios from "axios";
+import useSWR from 'swr'
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 const PostSection = () => {
   const [sharePost, setSharePost] = useState(false);
   const [showComments, setShowComments] = useState("");
-  const [allPosts, setAllPosts] = useState([]);
-  const [allusers, setAllUsers] = useState([]);
   const [postSentTo,setPostSentTo] = useState("")
   const [comment,setComment] = useState("")
 
-  const getAllPosts = async () => {
-    try {
-      const posts = await axios.get("/api/posts/getallposts");
-      setAllPosts(posts.data.data);
-      console.log(posts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data:allPosts, error:postError } = useSWR('/api/posts/getallposts', fetcher)
+  const { data:allUsers, error:userError } = useSWR('/api/users/allusers', fetcher)
 
-  const getAllUsers = async () => {
-    try {
-      const response = await axios.get("/api/users/allusers");
-      setAllUsers([response.data.data][0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+  if (postError) return <div>Failed to load</div>
+  if (!allPosts) return <div>Loading...</div>
+ 
+  // const getAllUsers = async () => {
+  //   try {
+  //     const response = await axios.get("/api/users/allusers");
+  //     setAllUsers([response.data.data][0]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const updateLikes = async(_id,like,add) => {
     console.log(_id,like)
@@ -55,10 +53,9 @@ const PostSection = () => {
     }
   }
 
-  useEffect(() => {
-    getAllPosts();
-    getAllUsers()
-  }, []);
+  // useEffect(() => {
+  //   getAllUsers()
+  // }, []);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -67,8 +64,8 @@ const PostSection = () => {
 
   return (
     <div className="mb-10">
-      {allPosts &&
-        allPosts.map((post, index) => {
+      {
+        allPosts.data.map((post, index) => {
           return (
             <div
               className="mt-2 md:border border-gray-400 rounded-md p-3 flex flex-col justify-center items-center"
@@ -314,9 +311,9 @@ const PostSection = () => {
                   <div className="modal-box">
                     <div className="w-full  rounded-md ">
                       <div className="flex p-3 space-x-6 overflow-x-scroll">
-                        {allusers.map((user) => {
+                        { allUsers.data.map((user) => {
                           return (
-                            <div key={user.id} onClick={()=>setPostSentTo(user.username)}>
+                            <div key={user._id} onClick={()=>setPostSentTo(user.username)}>
                               <div
                                 className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat cursor-pointer "
                                 style={{ backgroundImage: `url(${user.pic})` }}

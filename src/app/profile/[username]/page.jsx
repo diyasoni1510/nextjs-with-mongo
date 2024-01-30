@@ -1,14 +1,12 @@
-"use client"
-import React, { useState } from 'react'
+import React from 'react'
 import ProfileHeader from "../profileheader/page"
 import ProfileFooter from "../profilefooter/page"
 import StorySection from "../storysection/page"
 import PostSection from "../postsection/page"
+import axios from 'axios'
 
 
-
-
-const UserProfile = ({params}) => {
+const UserProfile = () => {
   return (
     <>
     <ProfileHeader/>
@@ -20,5 +18,6 @@ const UserProfile = ({params}) => {
     </>
   )
 }
+
 
 export default UserProfile
