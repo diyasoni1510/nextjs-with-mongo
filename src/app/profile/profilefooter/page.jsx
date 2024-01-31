@@ -42,7 +42,7 @@ const ProfileFooter = () => {
         },
       });
       localStorage.removeItem("username");
-      localStorage.removeItem("userId");
+      localStorage.removeItem("user");
       setLogoutLoading(false);
       router.push("/login");
     } catch (error) {

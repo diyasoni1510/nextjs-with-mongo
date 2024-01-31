@@ -10,39 +10,6 @@ import { IoPersonCircle } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const headerItems = [
-  {
-    icon: <FaHome />,
-    href: "/",
-    iconName: "name",
-  },
-  {
-    icon: <FiPlusCircle />,
-    href: "/home",
-    iconName: "name",
-  },
-  {
-    icon: <FaVideo />,
-    href: "/home",
-    iconName: "name",
-  },
-  {
-    icon: <FaRegHeart />,
-    href: "/home",
-    iconName: "name",
-  },
-  {
-    icon: <AiFillMessage />,
-    href: "/MessagePage",
-    iconName: "name",
-  },
-  {
-    icon: <IoPersonCircle />,
-    href: "/home",
-    iconName: "name",
-  },
-];
-
 const ProfileHeader = () => {
   const router = useRouter();
   const setUserLogout = () => {
@@ -58,7 +25,7 @@ const ProfileHeader = () => {
             <Link href="/" className="text-2xl hover:text-pink-300">
               <FaRegHeart />
             </Link>
-            <Link href="/MessagePage" className="text-2xl hover:text-pink-300">
+            <Link href="/messagelist" className="text-2xl hover:text-pink-300">
               <AiFillMessage />
             </Link>
           </div>
