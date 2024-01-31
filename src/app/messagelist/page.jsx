@@ -11,6 +11,7 @@ import useSWR from 'swr'
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 const MessageList = () => {
+  const currentUser = localStorage.getItem("username")
 
   
   const { data, error } = useSWR('/api/users/allusers', fetcher)
@@ -20,7 +21,7 @@ const MessageList = () => {
     <div>
       <div className="flex justify-between items-center py-4 px-2  shadow">
         <div className="flex justify-center items-center space-x-4">
-          <Link href={`/profile/${localStorage.getItem("username")}`}>
+          <Link href={`/profile/${currentUser}`}>
             <IoIosArrowBack className="text-2xl" />
           </Link>
           <p className="font-semibold">User name</p>
