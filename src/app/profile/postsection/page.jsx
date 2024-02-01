@@ -16,6 +16,8 @@ import useSWR, { mutate } from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+let userpic = JSON.parse(localStorage.getItem("user")).pic;
+
 const PostSection = () => {
   const [sharePost, setSharePost] = useState(false);
   const [showComments, setShowComments] = useState("");
@@ -67,21 +69,20 @@ const PostSection = () => {
   };
 
   const sendComment = async (e, postId) => {
+    console.log(userpic);
+    console.log(comment);
     if (e.key === "Enter") {
-      console.log(postId);
-      console.log("send comment", comment);
       const response = await axios.post("/api/posts/updatecomment", {
         _id: postId,
         user: localStorage.getItem("username"),
+        userpic,
         comment,
       });
-      console.log(comment);
+      toast.success("comment sent");
+      setComment("");
+      mutate("/api/posts/getallposts");
     }
   };
-
-  // useEffect(() => {
-  //   getAllUsers()
-  // }, []);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -207,6 +208,7 @@ const PostSection = () => {
                         type="text"
                         className="font-semibold w-100 outline-none"
                         placeholder="Add a comment.."
+                        value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         onKeyUp={(e) => {
                           sendComment(e, post._id);
@@ -269,7 +271,6 @@ const PostSection = () => {
                             </div>
                           </div>
                           <div className="all-comments px-2 h-[400px] overflow-y-scroll">
-                            {console.log(post.comments.length)}
                             {post.comments.length > 0 ? (
                               post.comments.map((comments, index) => {
                                 return (
@@ -280,7 +281,7 @@ const PostSection = () => {
                                     <div
                                       className="w-[30px] h-[30px] flex-shrink-0 rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat"
                                       style={{
-                                        backgroundImage: `url(${comments.userIamge})`,
+                                        backgroundImage: `url(${comments.userpic})`,
                                       }}
                                     ></div>
                                     <div>
@@ -326,6 +327,11 @@ const PostSection = () => {
                                   type="text"
                                   className="font-semibold w-100 outline-none bg-transparent text-sm"
                                   placeholder="Add a comment.."
+                                  value={comment}
+                                  onChange={(e) => setComment(e.target.value)}
+                                  onKeyUp={(e) => {
+                                    sendComment(e, post._id);
+                                  }}
                                 ></input>
                               </div>
                             </div>

@@ -8,9 +8,10 @@ connect()
 export async function POST(request : NextRequest){
     try {
         const reqBody = await request.json()
-        const {_id,user,comment} = reqBody
+        const {_id,user,userpic,comment} = reqBody
         const newComment = {
             user,
+            userpic,
             comment,
             createdAt: new Date()  
         };

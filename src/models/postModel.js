@@ -10,6 +10,7 @@ const postSchema = new mongoose.Schema({
   comments: [
     {
       user: String,
+      userpic:String,
       comment: String,
       createdAt: { type: Date, default: Date.now },
     },

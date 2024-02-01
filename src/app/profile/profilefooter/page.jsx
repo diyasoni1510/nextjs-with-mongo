@@ -13,11 +13,6 @@ import axios from "axios";
 import {mutate} from "swr";
 import toast, { Toaster } from "react-hot-toast";
 
-const fetcher = (...args) =>
-  fetch(...args).then((res) => {
-    res.json();
-  });
-
 const schema = Yup.object().shape({
   post: Yup.string().required(),
   caption: Yup.string(),
@@ -91,7 +86,7 @@ const ProfileFooter = () => {
   return (
     <>
       {isUpload && (
-        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[620px] absolute top-0 md:top-[-40px]">
+        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[620px] fixed top-0 md:top-[-40px]">
           <div className="modal-box w-full flex  justify-center items-center">
             <form
               className="flex space-y-3 flex-col justify-center items-center bg-white px-2 py-5 w-5/6"
