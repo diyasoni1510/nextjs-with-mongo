@@ -28,7 +28,6 @@ const ProfileFooter = () => {
   const [footerSlider, openFooterSlider] = useState(false);
   // const storedUserInfo = localStorage.getItem("user")
   // const userInfo = JSON.parse(localStorage.getItem("user"));
-  var version = 1
   const logout = async () => {
     try {
       setLogoutLoading(true);
@@ -78,10 +77,8 @@ const ProfileFooter = () => {
       });
       setLoading(false);
       setIsUpload(false);
-      version++
-      console.log(version)
       toast.success("Post uploaded successfully");
-      mutate(`/api/posts/getallposts${version}`);
+      mutate('/api/posts/getallposts');
     },
   });
   const { errors, touched, values, handleChange, handleSubmit } = formik;
