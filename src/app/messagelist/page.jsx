@@ -7,12 +7,13 @@ import { IoIosSearch } from "react-icons/io";
 import { CiCamera } from "react-icons/ci";
 import Link from "next/link";
 import useSWR from 'swr'
+import { useRouter } from "next/navigation";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-const currentUser = localStorage.getItem("username")
-
 const MessageList = () => {
+
+  const router = useRouter()
   
   const { data, error } = useSWR('/api/users/allusers', fetcher)
 
@@ -21,9 +22,7 @@ const MessageList = () => {
     <div>
       <div className="flex justify-between items-center py-4 px-2  shadow">
         <div className="flex justify-center items-center space-x-4">
-          <Link href={`/profile${currentUser}`}>
-            <IoIosArrowBack className="text-2xl" />
-          </Link>
+            <IoIosArrowBack className="text-2xl cursor-pointer" onClick={()=>router.back()}/>
           <p className="font-semibold">User name</p>
         </div>
         <div className="flex justify-center items-center space-x-4">
