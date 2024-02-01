@@ -112,6 +112,7 @@ const ProfileFooter = () => {
               >
                 <FiUpload className="text-3xl text-gray-400" />
               </button>
+              {console.log(values.post)}
               {values.post ? values.post.name : ""}
               <label htmlFor="caption">Caption</label>
               <textarea
