@@ -26,7 +26,7 @@ const PostSection = () => {
   const [localStorageValue, setLocalStorageValue] = useState(null);
 
   const { data: allPosts, error: postError } = useSWR(
-    "/api/posts/getallposts",
+    '/api/posts/getallposts',
     fetcher
   );
   const { data: allUsers, error: userError } = useSWR(
