@@ -16,7 +16,6 @@ import useSWR, { mutate } from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-let userpic = JSON.parse(localStorage.getItem("user")).pic;
 
 const PostSection = () => {
   const [sharePost, setSharePost] = useState(false);
@@ -24,6 +23,17 @@ const PostSection = () => {
   const [postSentTo, setPostSentTo] = useState("");
   const [comment, setComment] = useState("");
   const [islike, setIsLike] = useState();
+  const [localStorageValue, setLocalStorageValue] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedValue = localStorage.getItem('user');
+      setLocalStorageValue(storedValue);
+    }
+  }, []);
+
+let userpic = JSON.parse(localStorage.getItem("user")).pic;
+
 
   const { data: allPosts, error: postError } = useSWR(
     "/api/posts/getallposts",
@@ -69,13 +79,13 @@ const PostSection = () => {
   };
 
   const sendComment = async (e, postId) => {
-    console.log(userpic);
-    console.log(comment);
+    // console.log(JSON.parse(localStorageValue).pic);
+    // console.log(comment);
     if (e.key === "Enter") {
       const response = await axios.post("/api/posts/updatecomment", {
         _id: postId,
         user: localStorage.getItem("username"),
-        userpic,
+        userpic:JSON.parse(localStorageValue).pic,
         comment,
       });
       toast.success("comment sent");
