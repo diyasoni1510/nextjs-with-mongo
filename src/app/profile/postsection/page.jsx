@@ -25,16 +25,6 @@ const PostSection = () => {
   const [islike, setIsLike] = useState();
   const [localStorageValue, setLocalStorageValue] = useState(null);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedValue = localStorage.getItem('user');
-      setLocalStorageValue(storedValue);
-    }
-  }, []);
-
-let userpic = JSON.parse(localStorage.getItem("user")).pic;
-
-
   const { data: allPosts, error: postError } = useSWR(
     "/api/posts/getallposts",
     fetcher
@@ -85,7 +75,7 @@ let userpic = JSON.parse(localStorage.getItem("user")).pic;
       const response = await axios.post("/api/posts/updatecomment", {
         _id: postId,
         user: localStorage.getItem("username"),
-        userpic:JSON.parse(localStorageValue).pic,
+        userpic:JSON.parse(localStorage.getItem("user")).pic,
         comment,
       });
       toast.success("comment sent");
