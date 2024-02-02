@@ -10,11 +10,30 @@ import toast, { Toaster } from "react-hot-toast";
 const schema = Yup.object().shape({
   username: Yup.string().required(),
   password: Yup.string().required().min(7),
+  pic: Yup.mixed().required()
 });
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [data, setData] = useState(null);
+  const [pic,setPic] = useState()
+
+  const postPic = (pic) =>{
+    console.log(pic)
+      const data = new FormData()
+      console.log(data)
+      data.append("file",pic)
+      data.append("upload_preset","gupshup")
+      data.append("cloud_name","dp2bxtrpy")
+       fetch("https://api.cloudinary.com/v1_1/dp2bxtrpy/image/upload",{
+        method:'post',
+        body:data
+      }).then((res)=>res.json()).then(data=>{
+        setPic(data.url.toString())
+        console.log(data)
+        console.log(data.url.toString())
+      })
+  }
 
   const router = useRouter();
   const formik = useFormik({
@@ -23,24 +42,27 @@ const LoginPage = () => {
       password: "",
     },
     validationSchema: schema,
-    onSubmit: async ({ username, password }) => {
-      try {
-        setLoading(true);
-        const verifylogin = await axios.post("api/users/login", {
-          username,
-          password,
-        });
-        const user = await axios.post("/api/users/getuserfromusername",{username})
-        localStorage.setItem("username", username);
-        console.log("user ",user.data.data)
-        localStorage.setItem("user",JSON.stringify(user.data.data))
-        await axios.get("/api/users/userprofile").then((res) => {
-          setData(res.data.data.username);
-        });
-      } catch (error) {
-        toast.error(error.response.data.message);
-        setLoading(false)
-      }
+    onSubmit: async ({ username, password}) => {
+      console.log(username,password)
+      // try {
+      //   setLoading(true);
+      //   const verifylogin = await axios.post("api/users/login", {
+      //     username,
+      //     password,
+      //   });
+      //   const user = await axios.post("/api/users/getuserfromusername", {
+      //     username,
+      //   });
+      //   localStorage.setItem("username", username);
+      //   console.log("user ", user.data.data);
+      //   localStorage.setItem("user", JSON.stringify(user.data.data));
+      //   await axios.get("/api/users/userprofile").then((res) => {
+      //     setData(res.data.data.username);
+      //   });
+      // } catch (error) {
+      //   toast.error(error.response.data.message);
+      //   setLoading(false);
+      // }
     },
   });
   useEffect(() => {
@@ -52,7 +74,7 @@ const LoginPage = () => {
   });
   useEffect(() => {
     if (data) {
-      setLoading(false)
+      setLoading(false);
       router.push(`/profile/${data}`);
     }
   }, [data]);
@@ -61,7 +83,7 @@ const LoginPage = () => {
     <>
       <div className="w-full  h-screen flex items-center justify-center ">
         <div className="flex flex-col  items-center justify-center px-4 py-4">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="w-[260px]">
             <label htmlFor="username" className="text-gray-600 font-semibold">
               Username:
             </label>
@@ -98,6 +120,10 @@ const LoginPage = () => {
               <span className="text-red-500 text-sm">{errors.password}</span>
             )}
             <br />
+            <label htmlFor="pic" className="text-gray-600 font-semibold">
+              Profile Picture
+            </label>
+            <input name="pic" id="pic" type="file" className="w-100 mt-2" value={values.pic} onChange={(e)=>{postPic(e.target.files[0])}}></input>
             <div className="mt-5">
               <button
                 disabled={buttonDisabled}
