@@ -18,23 +18,6 @@ const LoginPage = () => {
   const [data, setData] = useState(null);
   const [username,setUsername] = useState("")
   const [password,setPassword] = useState("")
-  const [pic,setPic] = useState()
-
-  const postPic = (pic) =>{
-    setLoading(true)
-    console.log(pic)
-      const data = new FormData()
-      data.append("file",pic)
-      data.append("upload_preset","gupshup")
-      data.append("cloud_name","dp2bxtrpy")
-       fetch("https://api.cloudinary.com/v1_1/dp2bxtrpy/image/upload",{
-        method:'post',
-        body:data
-      }).then((res)=>res.json()).then(data=>{
-        setPic(data.url.toString())
-      })
-      setLoading(false)
-  }
 
   const router = useRouter();
   // const formik = useFormik({
@@ -69,7 +52,7 @@ const LoginPage = () => {
   //   },
   // }); 
   useEffect(() => {
-    if (username.length > 0 && password.length > 0 && pic) {
+    if (username.length > 0 && password.length > 0 ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -84,7 +67,7 @@ const LoginPage = () => {
   const submitForm = async(e) => {
     e.preventDefault()
     console.log("submit")
-    if(!username || !password || !pic){
+    if(!username || !password){
       return toast.warning("Please fill all the fields")
     }
     try {
@@ -92,7 +75,6 @@ const LoginPage = () => {
         const verifylogin = await axios.post("api/users/login", {
           username,
           password,
-          pic
         });
         console.log(verifylogin)
         setLoading(false);
@@ -107,7 +89,7 @@ const LoginPage = () => {
   // const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
     <>
-      <div className="w-full  h-screen flex items-center justify-center ">
+      <div className="w-full flex items-center justify-center ">
         <div className="flex flex-col  items-center justify-center px-4 py-4">
           <form className="w-[260px]">
             <label htmlFor="username" className="text-gray-600 font-semibold">
@@ -146,10 +128,6 @@ const LoginPage = () => {
               <span className="text-red-500 text-sm">{errors.password}</span>
             )} */}
             <br />
-            <label htmlFor="pic" className="text-gray-600 font-semibold">
-              Profile Picture
-            </label>
-            <input name="pic" id="pic" type="file" className="w-100 mt-2" onChange={(e)=>{postPic(e.target.files[0])}}></input>
             <div className="mt-5">
               <button
                 disabled={buttonDisabled}

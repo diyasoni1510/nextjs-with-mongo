@@ -39,7 +39,7 @@ const ProfileFooter = () => {
       localStorage.removeItem("username");
       localStorage.removeItem("user");
       setLogoutLoading(false);
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.log(error);
       console.log(error.mesage);

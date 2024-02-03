@@ -13,94 +13,126 @@ const schema = Yup.object().shape({
   password: Yup.string().required().min(7),
 });
 const SignupPage = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pic, setPic] = useState();
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const router = useRouter();
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
-    validationSchema: schema,
-    onSubmit: async ({ username, password, email }) => {
-      try {
-        setLoading(true);
-        await axios
-          .post("/api/users/signup", { username, password, email })
-          .then((res) => {
-            console.log(res);
-            setLoading(false);
+  // const formik = useFormik({
+  //   initialValues: {
+  //     username: "",
+  //     email: "",
+  //     password: "",
+  //   },
+  //   validationSchema: schema,
+  //   onSubmit: async ({ username, password, email }) => {
+  //     try {
+  //       setLoading(true);
+  //       await axios
+  //         .post("/api/users/signup", { username, password, email })
+  //         .then((res) => {
+  //           console.log(res);
+  //           setLoading(false);
 
-            if (res.data.status === 201) {
-              toast.success("User Signed up succesfully");
-              router.push("/login");
-            } else toast.error("User already exists");
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error("Something went wrong");
-          });
+  //           if (res.data.status === 201) {
+  //             toast.success("User Signed up succesfully");
+  //             router.push("/login");
+  //           } else toast.error("User already exists");
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //           toast.error("Something went wrong");
+  //         });
+  //     } catch (error) {
+  //       toast.error(error.mesaage);
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   },
+  // });
+  const submitFrom = async(e) => {
+    e.preventDefault();
+    console.log(username, password, email, pic);
+        try {
+        setLoading(true);
+        const response = await axios.post("/api/users/signup", { username, password, email ,pic})
+        console.log(response)
+        if (response.data.status === 201) {
+          setLoading(false)
+          toast.success("User Signed up succesfully");
+          localStorage.setItem("username", response.data.data.username);
+        localStorage.setItem("user", JSON.stringify(response.data.data));
+          router.push(`/profile/${username}`);
+        } else {
+          toast.error("User already exists");
+        }
       } catch (error) {
         toast.error(error.mesaage);
         console.log(error);
       } finally {
         setLoading(false);
       }
-    },
-  });
+  };
   useEffect(() => {
-    if (
-      values.username.length > 0 &&
-      values.email.length > 0 &&
-      values.password.length > 0
-    ) {
+    if (username.length > 0 && email.length > 0 && password.length > 0 && pic) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
   });
-  const { errors, touched, values, handleChange, handleSubmit } = formik;
+  const postPic = (pic) => {
+    setLoading(true);
+    console.log(pic);
+    const data = new FormData();
+    data.append("file", pic);
+    data.append("upload_preset", "gupshup");
+    data.append("cloud_name", "dp2bxtrpy");
+    fetch("https://api.cloudinary.com/v1_1/dp2bxtrpy/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPic(data.url.toString());
+      });
+    setLoading(false);
+  };
   return (
     <>
-      <div className="w-full  h-screen flex items-center justify-center ">
+      <div className="w-full flex items-center justify-center ">
         <div className="flex flex-col  items-center justify-center px-4 py-4 ">
-          <form onSubmit={handleSubmit}>
+          <form className="w-[260px]">
             <label htmlFor="username" className="text-gray-600 font-semibold">
               Username:
             </label>
             <br />
             <input
               name="username"
-              id="username"
+              id="signup-username"
               type="text"
               placeholder="Username"
-              value={values.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e)=>setUsername(e.target.value)}
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
-            <br></br>
-            {errors.username && touched.username && (
-              <span className="text-red-500 text-sm">{errors.username}</span>
-            )}
             <br />
+            
             <label htmlFor="email" className="text-gray-600 font-semibold">
               email:
             </label>
             <br />
             <input
               name="email"
-              id="email"
+              id="signup-email"
               type="text"
               placeholder="email"
-              value={values.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
-            <br></br>
-            {errors.email && touched.email && (
-              <span className="text-red-500 text-sm">{errors.email}</span>
-            )}
             <br />
             <label htmlFor="password" className="text-gray-600 font-semibold">
               Password:
@@ -108,22 +140,30 @@ const SignupPage = () => {
             <br />
             <input
               name="password"
-              id="password"
+              id="signup-password"
               type="password"
               placeholder="password"
-              value={values.password}
-              onChange={handleChange}
-              className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 mt-2 "
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
+              className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
-            <br></br>
-            {errors.password && touched.password && (
-              <span className="text-red-500 text-sm">{errors.password}</span>
-            )}
             <br />
+            <label htmlFor="pic" className="text-gray-600 font-semibold">
+              Profile Picture
+            </label>
+            <input
+              name="pic"
+              id="signup-pic"
+              type="file"
+              className="w-100 mt-2"
+              onChange={(e) => {
+                postPic(e.target.files[0]);
+              }}
+            ></input>
             <div className="mt-5">
               <button
+                onClick={submitFrom}
                 disabled={buttonDisabled}
-                type="submit"
                 className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition disabled:bg-pink-300 "
               >
                 {loading === true && (
