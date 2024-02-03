@@ -21,3 +21,6 @@ Problem - same username and eamail se signup ho jaa rha
 
 
 im making an insta clone in which i have posts so when i post and refresh the page it gives me 304 status and doesnt add the newly posted post.....im making the getposts api call via swr in next js project like this const { data:allPosts, error:postError } = useSWR('/api/posts/getallposts', fetcher)
+
+
+3 Feb 2024 - all Apis except login and signup (i think all get method apis) are giving 304 (not modified) status on live site....locally everything works fine 
