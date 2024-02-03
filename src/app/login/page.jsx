@@ -16,12 +16,14 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [data, setData] = useState(null);
+  const [username,setUsername] = useState("")
+  const [password,setPassword] = useState("")
   const [pic,setPic] = useState()
 
   const postPic = (pic) =>{
+    setLoading(true)
     console.log(pic)
       const data = new FormData()
-      console.log(data)
       data.append("file",pic)
       data.append("upload_preset","gupshup")
       data.append("cloud_name","dp2bxtrpy")
@@ -30,60 +32,84 @@ const LoginPage = () => {
         body:data
       }).then((res)=>res.json()).then(data=>{
         setPic(data.url.toString())
-        console.log(data)
-        console.log(data.url.toString())
       })
+      setLoading(false)
   }
 
   const router = useRouter();
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: schema,
-    onSubmit: async ({ username, password}) => {
-      console.log(username,password)
-      // try {
-      //   setLoading(true);
-      //   const verifylogin = await axios.post("api/users/login", {
-      //     username,
-      //     password,
-      //   });
-      //   const user = await axios.post("/api/users/getuserfromusername", {
-      //     username,
-      //   });
-      //   localStorage.setItem("username", username);
-      //   console.log("user ", user.data.data);
-      //   localStorage.setItem("user", JSON.stringify(user.data.data));
-      //   await axios.get("/api/users/userprofile").then((res) => {
-      //     setData(res.data.data.username);
-      //   });
-      // } catch (error) {
-      //   toast.error(error.response.data.message);
-      //   setLoading(false);
-      // }
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     username: "",
+  //     password: "",
+  //   },
+  //   validationSchema: schema,
+  //   onSubmit: async ({ username, password}) => {
+  //     console.log("submit")
+  //     console.log(username,password)
+  //     console.log(pic)
+  //     // try {
+  //     //   setLoading(true);
+  //     //   const verifylogin = await axios.post("api/users/login", {
+  //     //     username,
+  //     //     password,
+  //     //   });
+  //     //   const user = await axios.post("/api/users/getuserfromusername", {
+  //     //     username,
+  //     //   });
+  //     //   localStorage.setItem("username", username);
+  //     //   console.log("user ", user.data.data);
+  //     //   localStorage.setItem("user", JSON.stringify(user.data.data));
+  //     //   await axios.get("/api/users/userprofile").then((res) => {
+  //     //     setData(res.data.data.username);
+  //     //   });
+  //     // } catch (error) {
+  //     //   toast.error(error.response.data.message);
+  //     //   setLoading(false);
+  //     // }
+  //   },
+  // }); 
   useEffect(() => {
-    if (values.username.length > 0 && values.password.length > 0) {
+    if (username.length > 0 && password.length > 0 && pic) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
   });
-  useEffect(() => {
-    if (data) {
-      setLoading(false);
-      router.push(`/profile/${data}`);
+  // useEffect(() => {
+  //   if (data) {
+  //     setLoading(false);
+  //     router.push(`/profile/${data}`);
+  //   }
+  // }, [data]);
+  const submitForm = async(e) => {
+    e.preventDefault()
+    console.log("submit")
+    if(!username || !password || !pic){
+      return toast.warning("Please fill all the fields")
     }
-  }, [data]);
-  const { errors, touched, values, handleChange, handleSubmit } = formik;
+    try {
+        setLoading(true);
+        const verifylogin = await axios.post("api/users/login", {
+          username,
+          password,
+          pic
+        });
+        console.log(verifylogin)
+        setLoading(false);
+        localStorage.setItem("username", verifylogin.data.data.username);
+        localStorage.setItem("user", JSON.stringify(verifylogin.data.data));
+      router.push(`/profile/${verifylogin.data.data.username}`);
+      } catch (error) {
+        toast.error(error.response.data.message);
+        setLoading(false);
+      }
+  }
+  // const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
     <>
       <div className="w-full  h-screen flex items-center justify-center ">
         <div className="flex flex-col  items-center justify-center px-4 py-4">
-          <form onSubmit={handleSubmit} className="w-[260px]">
+          <form className="w-[260px]">
             <label htmlFor="username" className="text-gray-600 font-semibold">
               Username:
             </label>
@@ -93,14 +119,14 @@ const LoginPage = () => {
               id="username"
               type="text"
               placeholder="Username"
-              value={values.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e)=>setUsername(e.target.value)}
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
             <br></br>
-            {errors.username && touched.username && (
+            {/* {errors.username && touched.username && (
               <span className="text-red-500 text-sm">{errors.username}</span>
-            )}
+            )} */}
             <br />
             <label htmlFor="password" className="text-gray-600 font-semibold">
               Password:
@@ -111,23 +137,23 @@ const LoginPage = () => {
               id="password"
               type="password"
               placeholder="password"
-              value={values.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 mt-2 "
             ></input>
             <br></br>
-            {errors.password && touched.password && (
+            {/* {errors.password && touched.password && (
               <span className="text-red-500 text-sm">{errors.password}</span>
-            )}
+            )} */}
             <br />
             <label htmlFor="pic" className="text-gray-600 font-semibold">
               Profile Picture
             </label>
-            <input name="pic" id="pic" type="file" className="w-100 mt-2" value={values.pic} onChange={(e)=>{postPic(e.target.files[0])}}></input>
+            <input name="pic" id="pic" type="file" className="w-100 mt-2" onChange={(e)=>{postPic(e.target.files[0])}}></input>
             <div className="mt-5">
               <button
                 disabled={buttonDisabled}
-                type="submit"
+                onClick={submitForm}
                 className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition disabled:bg-pink-300 "
               >
                 {loading === true && (
