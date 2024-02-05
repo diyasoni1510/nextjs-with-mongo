@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
@@ -7,16 +7,10 @@ import { FaVideo } from "react-icons/fa";
 import { IoPersonCircle } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import axios from "axios";
 import { mutate } from "swr";
 import toast, { Toaster } from "react-hot-toast";
 
-const schema = Yup.object().shape({
-  post: Yup.string().required(),
-  caption: Yup.string(),
-});
 
 const ProfileFooter = () => {
   const router = useRouter();
@@ -29,8 +23,6 @@ const ProfileFooter = () => {
   const [post, setPost] = useState();
   const [caption, setCaption] = useState();
   const [postName, setPostName] = useState("");
-  // const storedUserInfo = localStorage.getItem("user")
-  // const userInfo = JSON.parse(localStorage.getItem("user"));
   const logout = async () => {
     try {
       setLogoutLoading(true);
@@ -48,43 +40,6 @@ const ProfileFooter = () => {
       console.log(error.mesage);
     }
   };
-  // const readFileAsDataURL = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-
-  //     reader.onloadend = () => {
-  //       resolve(reader.result);
-  //     };
-
-  //     reader.onerror = () => {
-  //       reject(new Error("Failed to read file as data URL"));
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   });
-  // };
-  // const formik = useFormik({
-  //   initialValues: {
-  //     post: "",
-  //     caption: "",
-  //   },
-  //   validationSchema: schema,
-  //   onSubmit: async ({ post, caption }) => {
-  //     setLoading(true);
-  //     const base64String = await readFileAsDataURL(post);
-  //     const uploadPost = await axios.post("/api/users/uploadpost", {
-  //       post: base64String,
-  //       caption,
-  //       userId: JSON.parse(localStorage.getItem("user"))._id,
-  //       username: localStorage.getItem("username"),
-  //     });
-  //     setLoading(false);
-  //     setIsUpload(false);
-  //     toast.success("Post uploaded successfully");
-  //     mutate('/api/posts/getallposts');
-  //   },
-  // });
-  // const { errors, touched, values, handleChange, handleSubmit } = formik;
   const submitPost = async (e) => {
     e.preventDefault();
     console.log(post, caption);

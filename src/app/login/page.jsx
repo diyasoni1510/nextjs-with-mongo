@@ -20,37 +20,6 @@ const LoginPage = () => {
   const [password,setPassword] = useState("")
 
   const router = useRouter();
-  // const formik = useFormik({
-  //   initialValues: {
-  //     username: "",
-  //     password: "",
-  //   },
-  //   validationSchema: schema,
-  //   onSubmit: async ({ username, password}) => {
-  //     console.log("submit")
-  //     console.log(username,password)
-  //     console.log(pic)
-  //     // try {
-  //     //   setLoading(true);
-  //     //   const verifylogin = await axios.post("api/users/login", {
-  //     //     username,
-  //     //     password,
-  //     //   });
-  //     //   const user = await axios.post("/api/users/getuserfromusername", {
-  //     //     username,
-  //     //   });
-  //     //   localStorage.setItem("username", username);
-  //     //   console.log("user ", user.data.data);
-  //     //   localStorage.setItem("user", JSON.stringify(user.data.data));
-  //     //   await axios.get("/api/users/userprofile").then((res) => {
-  //     //     setData(res.data.data.username);
-  //     //   });
-  //     // } catch (error) {
-  //     //   toast.error(error.response.data.message);
-  //     //   setLoading(false);
-  //     // }
-  //   },
-  // }); 
   useEffect(() => {
     if (username.length > 0 && password.length > 0 ) {
       setButtonDisabled(false);
@@ -59,12 +28,6 @@ const LoginPage = () => {
     }
   });
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setLoading(false);
-  //     router.push(`/profile/${data}`);
-  //   }
-  // }, [data]);
   const submitForm = async(e) => {
     e.preventDefault()
     try {
@@ -75,8 +38,6 @@ const LoginPage = () => {
         });
         console.log(verifylogin.message)
         setLoading(false);
-        // if(verifylogin.status == 400)
-        // toast.error("passwordis not correct")
         localStorage.setItem("username", verifylogin.data.data.username);
         localStorage.setItem("user", JSON.stringify(verifylogin.data.data));
       router.push(`/profile/${verifylogin.data.data.username}`);
@@ -86,7 +47,6 @@ const LoginPage = () => {
         setLoading(false);
       }
   }
-  // const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
     <>
       <div className="w-full flex items-center justify-center ">
@@ -106,9 +66,6 @@ const LoginPage = () => {
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
             <br></br>
-            {/* {errors.username && touched.username && (
-              <span className="text-red-500 text-sm">{errors.username}</span>
-            )} */}
             <br />
             <label htmlFor="password" className="text-gray-600 font-semibold">
               Password:
@@ -124,9 +81,6 @@ const LoginPage = () => {
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 mt-2 "
             ></input>
             <br></br>
-            {/* {errors.password && touched.password && (
-              <span className="text-red-500 text-sm">{errors.password}</span>
-            )} */}
             <br />
             <div className="mt-5">
               <button

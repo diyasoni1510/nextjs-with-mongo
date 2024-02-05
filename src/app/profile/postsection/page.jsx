@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegSmileBeam } from "react-icons/fa";
-import { ImCross } from "react-icons/im";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdGif } from "react-icons/md";
 import Link from "next/link";
@@ -23,7 +22,6 @@ const PostSection = () => {
   const [postSentTo, setPostSentTo] = useState("");
   const [comment, setComment] = useState("");
   const [islike, setIsLike] = useState();
-  const [localStorageValue, setLocalStorageValue] = useState(null);
 
   const { data: allPosts, error: postError } = useSWR(
     "/api/posts/getallposts",
@@ -69,8 +67,6 @@ const PostSection = () => {
   };
 
   const sendComment = async (e, postId) => {
-    // console.log(JSON.parse(localStorageValue).pic);
-    // console.log(comment);
     if (e.key === "Enter") {
       const response = await axios.post("/api/posts/updatecomment", {
         _id: postId,

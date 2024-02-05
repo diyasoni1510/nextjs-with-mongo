@@ -54,10 +54,7 @@ const MessageList = () => {
                     />
                   </div>
                   <div className="text-sm">
-                    <p>{user.name}</p>
-                    {/* <p className="text-gray-400">
-                      {user.lastMessage}
-                    </p> */}
+                    <p>{user.name ? user.name : user.username}</p>
                   </div>
                 </div>
               </Link>
