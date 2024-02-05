@@ -7,6 +7,9 @@ connect()
 
 export async function GET(request:NextRequest) {
     try {
+        const headers = {
+            "Custom-Header": "Custom Value",
+          };
         const allUsers = await User.find({})
         return NextResponse.json({message:"all users",data:allUsers})
     } catch (error :any) {

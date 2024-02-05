@@ -12,31 +12,31 @@ const StorySection = () => {
   const [allUsers,setAllUsers] = useState([])
   const [loading,setLoading] = useState(false)
 
-  const { data, error } = useSWR('/api/users/allusers', fetcher)
+  // const { data, error } = useSWR('/api/users/allusers', fetcher)
 
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div className="flex p-3 space-x-6 overflow-x-scroll"><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div></div>
+  // if (error) return <div>Failed to load</div>
+  // if (!data) return <div className="flex p-3 space-x-6 overflow-x-scroll"><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div><div className="w-[50px] h-[50px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-gray-200 cursor-pointer "></div></div>
 
 
-  // const getAllUsers = async() =>{
-  //   try {
-  //     setLoading(true)
-  //   const response = await axios.get("/api/users/allusers")
-  //     console.log(response.data.data)
-  //     setAllUsers([response.data.data][0])
-  //     setLoading(false)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-  // useEffect(()=>{
-  //   getAllUsers()
-  // },[])
+  const getAllUsers = async() =>{
+    try {
+      setLoading(true)
+    const response = await axios.get("/api/users/allusers")
+      console.log(response.data.data)
+      setAllUsers([response.data.data][0])
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getAllUsers()
+  },[])
 
   return (
     <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md ">
       <div className="flex p-3 space-x-6 overflow-x-scroll">
-        {data.data.map((user) => {
+        {allUsers?.map((user) => {
           return (
             <div key={user._id}>
               <div
