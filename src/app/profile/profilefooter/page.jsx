@@ -10,7 +10,7 @@ import { FiUpload } from "react-icons/fi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import {mutate} from "swr";
+import { mutate } from "swr";
 import toast, { Toaster } from "react-hot-toast";
 
 const schema = Yup.object().shape({
@@ -26,6 +26,9 @@ const ProfileFooter = () => {
   const pathname = usePathname();
   const username = pathname.split("profile/").pop();
   const [footerSlider, openFooterSlider] = useState(false);
+  const [post, setPost] = useState();
+  const [caption, setCaption] = useState();
+  const [postName, setPostName] = useState("");
   // const storedUserInfo = localStorage.getItem("user")
   // const userInfo = JSON.parse(localStorage.getItem("user"));
   const logout = async () => {
@@ -45,59 +48,97 @@ const ProfileFooter = () => {
       console.log(error.mesage);
     }
   };
-  const readFileAsDataURL = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  // const readFileAsDataURL = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
 
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
+  //     reader.onloadend = () => {
+  //       resolve(reader.result);
+  //     };
 
-      reader.onerror = () => {
-        reject(new Error("Failed to read file as data URL"));
-      };
+  //     reader.onerror = () => {
+  //       reject(new Error("Failed to read file as data URL"));
+  //     };
 
-      reader.readAsDataURL(file);
-    });
-  };
-  const formik = useFormik({
-    initialValues: {
-      post: "",
-      caption: "",
-    },
-    validationSchema: schema,
-    onSubmit: async ({ post, caption }) => {
+  //     reader.readAsDataURL(file);
+  //   });
+  // };
+  // const formik = useFormik({
+  //   initialValues: {
+  //     post: "",
+  //     caption: "",
+  //   },
+  //   validationSchema: schema,
+  //   onSubmit: async ({ post, caption }) => {
+  //     setLoading(true);
+  //     const base64String = await readFileAsDataURL(post);
+  //     const uploadPost = await axios.post("/api/users/uploadpost", {
+  //       post: base64String,
+  //       caption,
+  //       userId: JSON.parse(localStorage.getItem("user"))._id,
+  //       username: localStorage.getItem("username"),
+  //     });
+  //     setLoading(false);
+  //     setIsUpload(false);
+  //     toast.success("Post uploaded successfully");
+  //     mutate('/api/posts/getallposts');
+  //   },
+  // });
+  // const { errors, touched, values, handleChange, handleSubmit } = formik;
+  const submitPost = async (e) => {
+    e.preventDefault();
+    console.log(post, caption);
+    try {
       setLoading(true);
-      const base64String = await readFileAsDataURL(post);
-      const uploadPost = await axios.post("/api/users/uploadpost", {
-        post: base64String,
+      const response = await axios.post("/api/users/uploadpost", {
+        post,
         caption,
-        userId: JSON.parse(localStorage.getItem("user"))._id,
+        userid: JSON.parse(localStorage.getItem("user"))._id,
         username: localStorage.getItem("username"),
       });
+      console.log(response);
       setLoading(false);
       setIsUpload(false);
       toast.success("Post uploaded successfully");
-      mutate('/api/posts/getallposts');
-    },
-  });
-  const { errors, touched, values, handleChange, handleSubmit } = formik;
+      mutate("/api/posts/getallposts");
+    } catch (error) {
+      toast.error(error.mesaage);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const inputFileRef = useRef();
+  const postPic = (pic) => {
+    setLoading(true);
+    console.log(pic);
+    const data = new FormData();
+    data.append("file", pic);
+    data.append("upload_preset", "gupshup");
+    data.append("cloud_name", "dp2bxtrpy");
+    fetch("https://api.cloudinary.com/v1_1/dp2bxtrpy/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPost(data.url.toString());
+      });
+    setLoading(false);
+  };
   return (
     <>
       {isUpload && (
         <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[620px] fixed top-0 md:top-[-40px]">
           <div className="modal-box w-full flex  justify-center items-center">
-            <form
-              className="flex space-y-3 flex-col justify-center items-center bg-white px-2 py-5 w-5/6"
-              onSubmit={handleSubmit}
-            >
+            <form className="flex space-y-3 flex-col justify-center items-center bg-white px-2 py-5 w-5/6">
               <input
                 type="file"
                 name="post"
                 id="post"
                 onChange={(e) => {
-                  formik.setFieldValue("post", e.currentTarget.files[0]);
+                  postPic(e.target.files[0]);
+                  setPostName(e.target.files[0]);
                 }}
                 accept="image/*"
                 className="hidden"
@@ -112,18 +153,20 @@ const ProfileFooter = () => {
               >
                 <FiUpload className="text-3xl text-gray-400" />
               </button>
-              {console.log(values.post)}
-              {values.post ? values.post.name : ""}
+              {postName ? postName.name : ""}
               <label htmlFor="caption">Caption</label>
               <textarea
                 name="caption"
                 id="caption"
                 rows={5}
-                value={values.caption}
-                onChange={handleChange}
+                value={caption}
+                onChange={(e) => {
+                  setCaption(e.target.value);
+                }}
                 className="border border-gray-500 rounded-md w-full"
               />
               <button
+                onClick={submitPost}
                 type="submit"
                 className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition disabled:bg-pink-300 "
               >

@@ -2,6 +2,7 @@
 import React from "react";
 import Login from "./login/page"
 import Signup from "./signup/page"
+import { Toaster } from "react-hot-toast";
 
 
 const Tabs = () => {
@@ -62,6 +63,7 @@ const Tabs = () => {
           </div>
         </div>
       </div>
+      <Toaster/>
     </>
   );
 };

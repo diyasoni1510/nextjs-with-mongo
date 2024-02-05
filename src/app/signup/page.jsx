@@ -77,7 +77,7 @@ const SignupPage = () => {
       }
   };
   useEffect(() => {
-    if (username.length > 0 && email.length > 0 && password.length > 0 && pic) {
+    if (username.length > 0 && email.length > 0 && password.length > 6 && pic) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -147,6 +147,10 @@ const SignupPage = () => {
               onChange={(e)=>setPassword(e.target.value)}
               className="p-2 rounded-md outline-none placeholder:text-sm bg-pink-50 focus:bg-white hover:bg-white placeholder:text-gray-600 focus:placeholder:text-transparent hover:placeholder:text-transparent ring-1 ring-offset-2 ring-pink-400 my-2 "
             ></input>
+            {password.length < 6 && <span className="text-xs text-red-500">
+              password must contain 6 digits
+            </span>}
+            
             <br />
             <label htmlFor="pic" className="text-gray-600 font-semibold">
               Profile Picture

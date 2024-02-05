@@ -58,6 +58,7 @@ const LoginPage = () => {
       setButtonDisabled(true);
     }
   });
+
   // useEffect(() => {
   //   if (data) {
   //     setLoading(false);
@@ -66,23 +67,22 @@ const LoginPage = () => {
   // }, [data]);
   const submitForm = async(e) => {
     e.preventDefault()
-    console.log("submit")
-    if(!username || !password){
-      return toast.warning("Please fill all the fields")
-    }
     try {
         setLoading(true);
         const verifylogin = await axios.post("api/users/login", {
           username,
           password,
         });
-        console.log(verifylogin)
+        console.log(verifylogin.message)
         setLoading(false);
+        // if(verifylogin.status == 400)
+        // toast.error("passwordis not correct")
         localStorage.setItem("username", verifylogin.data.data.username);
         localStorage.setItem("user", JSON.stringify(verifylogin.data.data));
       router.push(`/profile/${verifylogin.data.data.username}`);
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message)
+        console.log(error.response.data.message)
         setLoading(false);
       }
   }
