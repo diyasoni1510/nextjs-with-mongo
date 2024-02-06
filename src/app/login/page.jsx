@@ -39,6 +39,7 @@ const LoginPage = () => {
         console.log(verifylogin.message)
         setLoading(false);
         localStorage.setItem("username", verifylogin.data.data.username);
+        localStorage.setItem("userId", verifylogin.data.data._id);
         localStorage.setItem("user", JSON.stringify(verifylogin.data.data));
       router.push(`/profile/${verifylogin.data.data.username}`);
       } catch (error) {

@@ -64,6 +64,7 @@ const SignupPage = () => {
           setLoading(false)
           toast.success("User Signed up succesfully");
           localStorage.setItem("username", response.data.data.username);
+          localStorage.setItem("userId", verifylogin.data.data._id);
         localStorage.setItem("user", JSON.stringify(response.data.data));
           router.push(`/profile/${username}`);
         } else {

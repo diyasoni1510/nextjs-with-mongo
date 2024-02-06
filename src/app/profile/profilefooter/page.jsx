@@ -32,6 +32,7 @@ const ProfileFooter = () => {
         },
       });
       localStorage.removeItem("username");
+      localStorage.removeItem("userId");
       localStorage.removeItem("user");
       setLogoutLoading(false);
       router.push("/");
@@ -48,12 +49,15 @@ const ProfileFooter = () => {
       const response = await axios.post("/api/users/uploadpost", {
         post,
         caption,
-        userid: JSON.parse(localStorage.getItem("user"))._id,
+        userId: JSON.parse(localStorage.getItem("user"))._id,
         username: localStorage.getItem("username"),
       });
       console.log(response);
       setLoading(false);
       setIsUpload(false);
+      setPost("")
+      setCaption("")
+      setPostName("")
       toast.success("Post uploaded successfully");
       mutate("/api/posts/getallposts");
     } catch (error) {

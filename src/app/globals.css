@@ -7,3 +7,6 @@
 body::-webkit-scrollbar {
     display: none !important;
 }
+.overflow-y-scroll::-webkit-scrollbar {
+    display: none !important;
+}
