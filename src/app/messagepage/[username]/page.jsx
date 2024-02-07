@@ -5,6 +5,7 @@ import axios from "axios";
 import { IoIosArrowBack } from "react-icons/io";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import { CiCamera } from "react-icons/ci";
+import { mutate } from "swr";
 
 const MessagePage = () => {
   const params = useParams();
@@ -15,6 +16,7 @@ const MessagePage = () => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [userTwo, setUserTwo] = useState();
+  const [chatId,setChatId] = useState()
   const router = useRouter();
 
   const userOne = localStorage?.getItem("userId");
@@ -39,6 +41,7 @@ const MessagePage = () => {
         userOne,
         userTwo,
       });
+      setChatId(createChat.data.data._id)
       console.log(createChat);
     }
   };
@@ -50,7 +53,10 @@ const MessagePage = () => {
         userOne,
         userTwo,
         message,
+        sender:localStorage?.getItem("userId")
       });
+      getAllMessage()
+      setMessage("")
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -59,9 +65,8 @@ const MessagePage = () => {
 
   const getAllMessage = async () => {
     try {
-      const response = await axios.get("/api/chat/allmessages");
-      console.log(response.data.data[0].messages);
-      setAllMessages(response.data.data[0].messages);
+      const response = await axios.post("/api/chat/allmessages",{chatId});
+      setAllMessages(response?.data?.data?.messages);
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +82,7 @@ const MessagePage = () => {
 
   useEffect(() => {
     getAllMessage();
-  }, []);
+  }, chatId);
 
   const themeOptions = [
     {
@@ -146,14 +151,27 @@ const MessagePage = () => {
           </p> */}
           {allMessages &&
             allMessages.map((message, index) => {
+              if(message.sender === localStorage.getItem("userId"))
+              {
               return (
                 <p
-                  className="bg-pink-300 w-fit px-4 py-2 rounded-3xl mb-2 float-left clear-both"
+                  className="bg-pink-300 w-fit px-4 py-2 rounded-3xl mb-2 float-right clear-both"
                   key={index}
                 >
                   {message.message}
                 </p>
               );
+              }
+              else{
+                return(
+                  <p
+                  className="bg-pink-300 w-fit px-4 py-2 rounded-3xl mb-2 float-left clear-both"
+                  key={index}
+                >
+                  {message.message}
+                </p>
+                )
+              }
             })}
         </div>
         <div className="msg-input absolute bottom-0 mb-4  w-[300px] mx-4 rounded-3xl flex py-2 items-center px-4 space-x-2 bg-white shadow">

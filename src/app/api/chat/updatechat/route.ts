@@ -8,10 +8,11 @@ connect()
 export async function POST(request : NextRequest){
     try {
         const reqBody = await request.json()
-        const {userOne,userTwo,message} = reqBody
+        const {userOne,userTwo,message,sender} = reqBody
 
         const newMessage = {
-            message
+            message,
+            sender
         };
        
         var sentMessage = await Chat.findOneAndUpdate({ userOne,userTwo },{ $addToSet: { messages: newMessage }})

@@ -4,9 +4,10 @@ import { NextResponse,NextRequest } from "next/server";
 
 connect()
 
-export async function GET(){
+export async function POST(request:NextRequest){
     try {
-        const allMessages = await Chat.find()
+        const {chatId} = await request.json()
+        const allMessages = await Chat.findOne({_id:chatId})
         return NextResponse.json({message: "all chats", data: allMessages});
     } catch (error:any) {
         return NextResponse.json({error:error.message},{status:500})
