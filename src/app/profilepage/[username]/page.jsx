@@ -113,9 +113,9 @@ const ProfilePage = () => {
         <button className="bg-pink-300 text-white font-semibold py-1 px-10 rounded-md">
           Follow
         </button>
-        <button className="bg-gray-200 font-semibold py-1 px-10 rounded-md">
+        <Link href={`/messagepage/${userUserName}`} className="bg-gray-200 font-semibold py-1 px-10 rounded-md">
           Message
-        </button>
+        </Link>
         <button className="bg-gray-200 font-semibold py-1 px-3 rounded-md">
           <IoPersonAddOutline />
         </button>
