@@ -9,14 +9,13 @@ export async function POST(request:NextRequest) {
 
     console.log("userOne - ",userOne,"userTwo - ",userTwo)
 
-    const chatRoom = await Chat.findOne({userOne,userTwo})
+    const chatRoom = await Chat.findOne({users:{$all:[userOne,userTwo]}})
 
     if(chatRoom)
     return NextResponse.json({message:"chat room exist",data:chatRoom})
 
     const newChatRoom = new Chat({
-        userOne,
-        userTwo
+        users:[userOne,userTwo]
     })
 
     const data = await newChatRoom.save()

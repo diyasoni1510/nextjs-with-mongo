@@ -50,8 +50,7 @@ const MessagePage = () => {
     console.log(userOne, userTwo, message);
     try {
       const response = await axios.post("/api/chat/updatechat", {
-        userOne,
-        userTwo,
+        chatId,
         message,
         sender:localStorage?.getItem("userId")
       });
@@ -82,7 +81,7 @@ const MessagePage = () => {
 
   useEffect(() => {
     getAllMessage();
-  }, chatId);
+  });
 
   const themeOptions = [
     {
