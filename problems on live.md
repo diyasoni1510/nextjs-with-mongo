@@ -8,9 +8,9 @@ SOLVED
 DESIGNING PROBLEMS
 -------------------
 
-1. when image is uploading there is no upload animation
-2. new user story should be on first place
+1. when image is uploading there is no upload animation- done
+2. new user story should be on first place - not apllicable
 3. check can i implement double click for like post
-4. the message page should not be scrollable and messahe input width should be increase by 10px
+4. the message page should not be scrollable and messahe input width should be increase by 10px - done
 5. the login user can only edit his profile 
 6. can i open smiley box with the smile click in comment section

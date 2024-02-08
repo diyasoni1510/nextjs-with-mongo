@@ -115,10 +115,11 @@ const PostSection = () => {
                 </div>
               </div>
 
-              <div className="mt-3">
+              <div className="mt-3 image">
                 <img
                   src={post.post}
                   className="object-fill min-w-full h-[300px]"
+                  onDoubleClick={()=>{alert("double click")}}
                 ></img>
               </div>
 
