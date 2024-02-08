@@ -1,7 +1,7 @@
 import { NextResponse,NextRequest } from "next/server"
 import User from "@/models/userModal"
 import connect from "@/dbConfig/dbConfig"
-
+export const dynamic = 'force-dynamic';
 
 connect()
 

@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import User from "@/models/userModal";
 import connect from "@/dbConfig/dbConfig";
 
+export const dynamic = 'force-dynamic';
+
 const getDataFromToken = (request:NextRequest) => {
     try {
         const token = request.cookies.get("userToken")?.value || '';

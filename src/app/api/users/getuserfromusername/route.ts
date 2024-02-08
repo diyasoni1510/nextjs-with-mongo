@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "@/models/userModal";
 import connect from "@/dbConfig/dbConfig";
 
-
+export const dynamic = 'force-dynamic';
 connect();
 
 export async function POST(request: NextRequest) {

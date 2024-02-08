@@ -1,6 +1,7 @@
 import connect from "@/dbConfig/dbConfig";
 import Chat from "@/models/chatModel"
 import { NextResponse,NextRequest } from "next/server";
+export const dynamic = 'force-dynamic';
 
 connect()
 

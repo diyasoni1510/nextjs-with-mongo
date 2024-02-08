@@ -2,6 +2,7 @@ import connect from "@/dbConfig/dbConfig"
 import { NextRequest,NextResponse } from "next/server" 
 import Post from "@/models/postModel" 
 
+export const dynamic = 'force-dynamic';
 connect()
 
 export async function POST(request:NextRequest){

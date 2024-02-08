@@ -2,6 +2,8 @@ import { NextResponse,NextRequest } from "next/server"
 import Post from "@/models/postModel"
 import connect from "@/dbConfig/dbConfig"
 
+export const dynamic = 'force-dynamic';
+
 
 connect()
 

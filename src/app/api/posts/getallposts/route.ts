@@ -3,6 +3,8 @@ import connect from "@/dbConfig/dbConfig";
 import Post from "@/models/postModel";
 import { NextResponse,NextRequest } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 connect()
 
 export async function GET(request:NextRequest) {
