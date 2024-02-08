@@ -16,6 +16,7 @@ const ProfileFooter = () => {
   const router = useRouter();
   const [isUpload, setIsUpload] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [picUploading, setPicUploading] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
   const pathname = usePathname();
   const username = pathname.split("profile/").pop();
@@ -69,7 +70,7 @@ const ProfileFooter = () => {
   };
   const inputFileRef = useRef();
   const postPic = (pic) => {
-    setLoading(true);
+    setPicUploading(true);
     console.log(pic);
     const data = new FormData();
     data.append("file", pic);
@@ -82,13 +83,13 @@ const ProfileFooter = () => {
       .then((res) => res.json())
       .then((data) => {
         setPost(data.url.toString());
+        setPicUploading(false)
       });
-    setLoading(false);
   };
   return (
     <>
       {isUpload && (
-        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[620px] fixed top-0 md:top-[-40px]">
+        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[562px] fixed top-0 md:top-[-40px]">
           <div className="modal-box w-full flex  justify-center items-center">
             <form className="flex space-y-3 flex-col justify-center items-center bg-white px-2 py-5 w-5/6">
               <input

@@ -83,7 +83,7 @@ const LoginPage = () => {
             ></input>
             <br></br>
             <br />
-            <div className="mt-5">
+            <div className="mt-5 flex justify-center items-center">
               <button
                 disabled={buttonDisabled}
                 onClick={submitForm}
@@ -113,12 +113,12 @@ const LoginPage = () => {
               </button>
             </div>
           </form>
-          <div className="mt-2">
+          <div className="mt-2 text-center">
             <Link href="/" className="text-pink-400 font-semibold">
               Forget password?
             </Link>
           </div>
-          <div className="mt-2  flex space-x-2">
+          <div className="mt-2 justify-center items-center flex space-x-2">
             <span className="font-semibold text-gray-600">
               Don&apos;t have an account ?
             </span>

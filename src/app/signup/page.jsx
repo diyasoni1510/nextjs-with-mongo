@@ -18,41 +18,9 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [pic, setPic] = useState();
   const [loading, setLoading] = useState(false);
+  const [picUploading, setPicUploading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const router = useRouter();
-  // const formik = useFormik({
-  //   initialValues: {
-  //     username: "",
-  //     email: "",
-  //     password: "",
-  //   },
-  //   validationSchema: schema,
-  //   onSubmit: async ({ username, password, email }) => {
-  //     try {
-  //       setLoading(true);
-  //       await axios
-  //         .post("/api/users/signup", { username, password, email })
-  //         .then((res) => {
-  //           console.log(res);
-  //           setLoading(false);
-
-  //           if (res.data.status === 201) {
-  //             toast.success("User Signed up succesfully");
-  //             router.push("/login");
-  //           } else toast.error("User already exists");
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //           toast.error("Something went wrong");
-  //         });
-  //     } catch (error) {
-  //       toast.error(error.mesaage);
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  // });
   const submitFrom = async(e) => {
     e.preventDefault();
     console.log(username, password, email, pic);
@@ -85,8 +53,7 @@ const SignupPage = () => {
     }
   });
   const postPic = (pic) => {
-    setLoading(true);
-    console.log(pic);
+    setPicUploading(true)
     const data = new FormData();
     data.append("file", pic);
     data.append("upload_preset", "gupshup");
@@ -98,8 +65,8 @@ const SignupPage = () => {
       .then((res) => res.json())
       .then((data) => {
         setPic(data.url.toString());
+    setPicUploading(false)
       });
-    setLoading(false);
   };
   return (
     <>
@@ -171,7 +138,7 @@ const SignupPage = () => {
                 disabled={buttonDisabled}
                 className="flex justify-center items-center  text-center bg-pink-400 text-white w-[235px] py-2 rounded-md font-semibold transform transition disabled:bg-pink-300 "
               >
-                {loading === true && (
+                {loading || picUploading === true && (
                   <div role="status">
                     <svg
                       aria-hidden="true"

@@ -173,7 +173,7 @@ const MessagePage = () => {
               }
             })}
         </div>
-        <div className="msg-input absolute bottom-0 mb-4  w-[300px] mx-4 rounded-3xl flex py-2 items-center px-4 space-x-2 bg-white shadow">
+        <div className="msg-input absolute bottom-0 mb-4  w-[315px] mx-4 rounded-3xl flex py-2 items-center px-4 space-x-2 bg-white shadow">
           <CiCamera className="text-3xl" />
           <input
             className="message outline-none w-5/6"
