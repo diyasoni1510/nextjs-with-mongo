@@ -158,7 +158,7 @@ const SignupPage = () => {
                     </svg>
                   </div>
                 )}
-                Sign Up
+                {picUploading ? "Uploading" : "Sign Up"}
               </button>
             </div>
           </form>

@@ -1,5 +1,5 @@
 "use client";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FaRegShareFromSquare } from "react-icons/fa6";
@@ -14,7 +14,6 @@ import axios from "axios";
 import useSWR, { mutate } from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
 
 const PostSection = () => {
   const [sharePost, setSharePost] = useState(false);
@@ -71,7 +70,7 @@ const PostSection = () => {
       const response = await axios.post("/api/posts/updatecomment", {
         _id: postId,
         user: localStorage.getItem("username"),
-        userpic:JSON.parse(localStorage.getItem("user")).pic,
+        userpic: JSON.parse(localStorage.getItem("user")).pic,
         comment,
       });
       toast.success("comment sent");
@@ -83,6 +82,19 @@ const PostSection = () => {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
+  };
+
+  const followUser = async (follow) => {
+    try {
+      const response = await axios.post("/api/users/updatefollowers", {
+        _id: localStorage?.getItem("userId"),
+        follow,
+        add: true,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -103,27 +115,45 @@ const PostSection = () => {
                     ></img>
                   </div>
                   <div>
-                    <Link href="/UserProfile" className="font-semibold">
+                    <Link
+                      href={`/profilepage/${post.username}`}
+                      className="font-semibold"
+                    >
                       {post.username}
                     </Link>
                   </div>
                 </div>
+                { post.userId !== localStorage?.getItem("userId") && 
                 <div>
-                  <button className="text-sm md:text-base bg-pink-400 text-white px-2 py-1 rounded-md font-semibold transform transition hover:bg-white hover:text-pink-400 disabled:bg-pink-300 hover:scale-95">
-                    Follow
-                  </button>
+                  {post.userDetails[0].followers.includes(
+                    localStorage?.getItem("userId")
+                  ) ? (
+                    <button className="text-sm md:text-base bg-white border-2 border-pink-400 text-pink-400 px-2 py-1 rounded-md font-semibold transform transition hover:bg-white hover:text-pink-400 disabled:bg-pink-300 hover:scale-95">
+                      Following
+                    </button>
+                  ) : (
+                    <button
+                      className="text-sm md:text-base bg-pink-400 text-white px-2 py-1 rounded-md font-semibold transform transition hover:bg-white hover:text-pink-400 disabled:bg-pink-300 hover:scale-95"
+                      onClick={() => followUser(post.userId)}
+                    >
+                      Follow
+                    </button>
+                  )}
                 </div>
+      }
               </div>
 
               <div className="mt-3 image">
                 <img
                   src={post.post}
                   className="object-fill min-w-full h-[300px]"
-                  onDoubleClick={()=>{updateLikes(
-                    post._id,
-                    localStorage.getItem("username"),
-                    true
-                  );}}
+                  onDoubleClick={() => {
+                    updateLikes(
+                      post._id,
+                      localStorage.getItem("username"),
+                      true
+                    );
+                  }}
                 ></img>
               </div>
 

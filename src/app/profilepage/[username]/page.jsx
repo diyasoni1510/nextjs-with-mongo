@@ -70,12 +70,15 @@ const ProfilePage = () => {
           </button>
           <p className="font-semibold">{userUserName ? userUserName : ""}</p>
         </div>
+        { userUserName === localStorage?.getItem("username") && 
+
         <div className="flex flex-col justify-center items-center space-x-4 ">
           <HiDotsVertical className="text-2xl" onClick={()=>edit === true ? setEdit(false) : setEdit(true)} />
           { edit === true && 
           <div className="cursor-pointer absolute top-12 border right-0 bg-white p-2"><Link href={`/setdetails/${localStorage.getItem("username")}`}>Edit profile</Link></div>
           }
         </div>
+}
       </div>
       <div className="px-2 flex items-center pt-5">
         <div className="flex-shrink-0 w-[60px] h-[60px]">
