@@ -21,7 +21,7 @@ const StorySection = () => {
   const getAllUsers = async() =>{
     try {
       setLoading(true)
-    const response = await axios.get("/api/users/allusers")
+    const response = await axios.get("/api/users/allusers",{cache:'no-store'})
       console.log(response.data.data)
       setAllUsers([response.data.data][0])
       setLoading(false)
