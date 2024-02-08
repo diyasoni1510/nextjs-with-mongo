@@ -119,7 +119,11 @@ const PostSection = () => {
                 <img
                   src={post.post}
                   className="object-fill min-w-full h-[300px]"
-                  onDoubleClick={()=>{alert("double click")}}
+                  onDoubleClick={()=>{updateLikes(
+                    post._id,
+                    localStorage.getItem("username"),
+                    true
+                  );}}
                 ></img>
               </div>
 
