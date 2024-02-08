@@ -108,7 +108,7 @@ const MessagePage = () => {
   return (
     <>
       <div
-        className="screen h-screen bg-center bg-cover"
+        className="bg-center bg-cover"
         style={{
           backgroundImage: `url(${bgTheme})`,
         }}
