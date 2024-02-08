@@ -132,7 +132,7 @@ const SignupPage = () => {
                 postPic(e.target.files[0]);
               }}
             ></input>
-            <div className="mt-5">
+            <div className="mt-5 flex justify-center items-center">
               <button
                 onClick={submitFrom}
                 disabled={buttonDisabled}
@@ -162,12 +162,12 @@ const SignupPage = () => {
               </button>
             </div>
           </form>
-          <div className="mt-2">
+          <div className="mt-2 text-center">
             <Link href="/" className="text-pink-400 font-semibold">
               Forget password?
             </Link>
           </div>
-          <div className="mt-2  flex space-x-2">
+          <div className="mt-2 justify-center items-center  flex space-x-2">
             <span className="font-semibold text-gray-600">
               Already have an account ?
             </span>
