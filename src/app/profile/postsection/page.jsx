@@ -98,7 +98,7 @@ const PostSection = () => {
                 <div className="flex space-x-3 md:space-x-4 items-center">
                   <div className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat">
                     <img
-                      src={post.userDetails[0].pic}
+                      src={post.userDetails[0]?.pic}
                       className="w-full h-full object-cover rounded-full"
                     ></img>
                   </div>
@@ -196,7 +196,7 @@ const PostSection = () => {
                     <div
                       className="w-[20px] h-[20px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat"
                       style={{
-                        backgroundImage: `url(${post.userDetails[0].pic})`,
+                        backgroundImage: `url(${post.userDetails[0]?.pic})`,
                       }}
                     ></div>
                     <div>
@@ -250,7 +250,7 @@ const PostSection = () => {
                               <div
                                 className="w-[30px] h-[30px] flex-shrink-0 rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat"
                                 style={{
-                                  backgroundImage: `url(${post.userDetails[0].pic})`,
+                                  backgroundImage: `url(${post.userDetails[0]?.pic})`,
                                 }}
                               ></div>
                               <div>
@@ -315,7 +315,7 @@ const PostSection = () => {
                               <div
                                 className="w-[20px] h-[20px] rounded-full ring-2 ring-offset-2 ring-pink-300 bg-cover bg-center bg-no-repeat"
                                 style={{
-                                  backgroundImage: `url(${post.userDetails[0].pic}})`,
+                                  backgroundImage: `url(${post.userDetails[0]?.pic}})`,
                                 }}
                               ></div>
                               <div>
