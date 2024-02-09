@@ -10,7 +10,7 @@ const Follow = () => {
   const router = useRouter();
   const [followers, setFollowers] = useState([]);
   const [allFollowers, setAllFollowers] = useState([]);
-
+  const [allFolllowings, setAllFolllowings] = useState([]);
   const [following, setFollowing] = useState([]);
 
   const getUserInfo = async (user) => {
@@ -25,13 +25,24 @@ const Follow = () => {
       console.log(error);
     }
   };
-  const getFollowInfo = async (user) => {
+  const getFollowerInfo = async (user) => {
     try {
       const response = await axios.post("/api/users/getuserfromid", {
         _id: user,
       });
       console.log(response);
       setAllFollowers((prev) => [...prev, response.data.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getFolloweingInfo = async (user) => {
+    try {
+      const response = await axios.post("/api/users/getuserfromid", {
+        _id: user,
+      });
+      console.log(response);
+      setAllFolllowings((prev) => [...prev, response.data.data]);
     } catch (error) {
       console.log(error);
     }
@@ -44,9 +55,17 @@ const Follow = () => {
     followers &&
       followers.map((follower, index) => {
         console.log(follower, index);
-        getFollowInfo(follower);
+        getFollowerInfo(follower);
       });
   }, [followers]);
+
+  useEffect(() => {
+    following &&
+      following.map((following, index) => {
+        console.log(following, index);
+        getFolloweingInfo(following);
+      });
+  }, [following]);
   return (
     <>
       <div>
@@ -87,6 +106,36 @@ const Follow = () => {
                     <div className="text-sm">
                       <p>{follower.username}</p>
                       <p>{follower.name}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        <div className="followings-list">
+          {following &&
+            allFolllowings &&
+            allFolllowings?.map((following, index) => {
+              return (
+                <div
+                  className="flex p-4 justify-between items-center"
+                  key={index}
+                >
+                  <div className="flex space-x-4">
+                    <div>
+                      <img
+                        src={following.pic}
+                        className="w-10 h-10 rounded-full object-cover"
+                      ></img>
+                    </div>
+                    <div className="text-sm">
+                      <p>{following.username}</p>
+                      <p>{following.name}</p>
                     </div>
                   </div>
                   <div>
