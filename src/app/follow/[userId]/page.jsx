@@ -12,6 +12,8 @@ const Follow = () => {
   const [allFollowers, setAllFollowers] = useState([]);
   const [allFolllowings, setAllFolllowings] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [showFollowers, setShowFollowers] = useState(true);
+  const [showFollowing, setShowFollowing] = useState(false);
 
   const getUserInfo = async (user) => {
     try {
@@ -75,78 +77,88 @@ const Follow = () => {
         </div>
         <div className="flex items-center justify-around py-4">
           <div>
-            <p className="cursor-pointer">
+            <p className="cursor-pointer" onClick={()=>{
+              setShowFollowing(!showFollowing)
+              setShowFollowers(!showFollowers)
+            }}>
               <span></span>followers
             </p>
             <div className="border border-black"></div>
           </div>
           <div>
-            <p className="cursor-pointer">
+            <p className="cursor-pointer" onClick={()=>{
+              setShowFollowing(!showFollowing)
+              setShowFollowers(!showFollowers)
+            }}>
               <span></span>following
             </p>
             <div className="border border-black"></div>
           </div>
         </div>
-        <div className="followers-list">
-          {followers &&
-            allFollowers &&
-            allFollowers?.map((follower, index) => {
-              return (
-                <div
-                  className="flex p-4 justify-between items-center"
-                  key={index}
-                >
-                  <div className="flex space-x-4">
+        {showFollowers && (
+          <div className="followers-list">
+            {followers &&
+              allFollowers &&
+              allFollowers?.map((follower, index) => {
+                return (
+                  <div
+                    className="flex p-4 justify-between items-center"
+                    key={index}
+                  >
+                    <div className="flex space-x-4">
+                      <div>
+                        <img
+                          src={follower.pic}
+                          className="w-10 h-10 rounded-full object-cover"
+                        ></img>
+                      </div>
+                      <div className="text-sm">
+                        <p>{follower.username}</p>
+                        <p>{follower.name}</p>
+                      </div>
+                    </div>
                     <div>
-                      <img
-                        src={follower.pic}
-                        className="w-10 h-10 rounded-full object-cover"
-                      ></img>
-                    </div>
-                    <div className="text-sm">
-                      <p>{follower.username}</p>
-                      <p>{follower.name}</p>
+                      <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                        Follow
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                      Follow
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-        <div className="followings-list">
-          {following &&
-            allFolllowings &&
-            allFolllowings?.map((following, index) => {
-              return (
-                <div
-                  className="flex p-4 justify-between items-center"
-                  key={index}
-                >
-                  <div className="flex space-x-4">
+                );
+              })}
+          </div>
+        )}
+        {showFollowing && (
+          <div className="followings-list">
+            {following &&
+              allFolllowings &&
+              allFolllowings?.map((following, index) => {
+                return (
+                  <div
+                    className="flex p-4 justify-between items-center"
+                    key={index}
+                  >
+                    <div className="flex space-x-4">
+                      <div>
+                        <img
+                          src={following.pic}
+                          className="w-10 h-10 rounded-full object-cover"
+                        ></img>
+                      </div>
+                      <div className="text-sm">
+                        <p>{following.username}</p>
+                        <p>{following.name}</p>
+                      </div>
+                    </div>
                     <div>
-                      <img
-                        src={following.pic}
-                        className="w-10 h-10 rounded-full object-cover"
-                      ></img>
-                    </div>
-                    <div className="text-sm">
-                      <p>{following.username}</p>
-                      <p>{following.name}</p>
+                      <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                        Follow
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                      Follow
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+                );
+              })}
+          </div>
+        )}
       </div>
     </>
   );
