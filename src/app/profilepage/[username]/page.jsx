@@ -46,7 +46,6 @@ const ProfilePage = () => {
       setFollowers(userinfo.data.data.followers);
       setFollowing(userinfo.data.data.following);
       const post = await axios.post("/api/posts/getposts",{userId:userinfo.data.data._id})
-    console.log(post.data.data)
     setPosts([post.data.data][0])
     } catch (error) {
       console.log(error);
@@ -95,12 +94,16 @@ const ProfilePage = () => {
             <p className="text-sm text-gray-500">Posts</p>
           </div>
           <div className="text-center">
+            <Link href={`/follow/${userId}`}>
             <p className="font-semibold">{followers.length}</p>
             <p className="text-sm text-gray-500">Followers</p>
+            </Link>
           </div>
           <div className="text-center">
+          <Link href={`/follow/${userId}`}>
             <p className="font-semibold">{following.length}</p>
             <p className="text-sm text-gray-500">Following</p>
+            </Link>
           </div>
         </div>
       </div>
