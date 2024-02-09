@@ -42,5 +42,5 @@ done api and follow
 -> chatting from web socket
 
 
--> remove folowers api
--> set unfollow api on fronend
+-> remove folowers api - done
+-> set unfollow api on fronend - done

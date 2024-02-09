@@ -30,6 +30,6 @@ LOGIC PROBLEMS
 1. a user can not follow the user which he has already follow
 2. on every profile page check if user follows or not
 3. set follow and unfollow functionalities on profilepage
-4. set folloe and unfollow functionalities on every user followers and following list
+4. set follow and unfollow functionalities on every user followers and following list
 5. 
  

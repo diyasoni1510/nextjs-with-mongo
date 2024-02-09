@@ -107,8 +107,8 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col  px-2 text-sm">
-        <p>{userUserName}</p>
+      <div className="flex flex-col pl-3 px-2 text-sm">
+        <p className=" pt-2">{userUserName}</p>
         <p className="text-gray-400 text-sm">{userName}</p>
         <p className="text-xs">{bio}</p>
         <p className="text-xs cursor-pointer text-sky-400">
