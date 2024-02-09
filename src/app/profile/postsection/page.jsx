@@ -91,6 +91,7 @@ const PostSection = () => {
         follow,
         add: true,
       });
+    mutate("/api/posts/getallposts");
       console.log(response);
     } catch (error) {
       console.log(error);

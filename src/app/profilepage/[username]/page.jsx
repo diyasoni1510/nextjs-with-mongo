@@ -94,13 +94,13 @@ const ProfilePage = () => {
             <p className="text-sm text-gray-500">Posts</p>
           </div>
           <div className="text-center">
-            <Link href={`/follow/${userId}`}>
+            <Link href={`/follow/${username}`}>
             <p className="font-semibold">{followers.length}</p>
             <p className="text-sm text-gray-500">Followers</p>
             </Link>
           </div>
           <div className="text-center">
-          <Link href={`/follow/${userId}`}>
+          <Link href={`/follow/${username}`}>
             <p className="font-semibold">{following.length}</p>
             <p className="text-sm text-gray-500">Following</p>
             </Link>

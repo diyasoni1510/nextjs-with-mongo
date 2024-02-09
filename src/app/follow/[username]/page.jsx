@@ -3,22 +3,24 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Follow = () => {
   const params = useParams();
-  const FollowOf = params.userId;
+  const FollowOf = params.username;
   const router = useRouter();
   const [followers, setFollowers] = useState([]);
   const [allFollowers, setAllFollowers] = useState([]);
   const [allFolllowings, setAllFolllowings] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [isMyProfile,setIsMyProfile] = useState()
   const [showFollowers, setShowFollowers] = useState(true);
   const [showFollowing, setShowFollowing] = useState(false);
 
   const getUserInfo = async (user) => {
     try {
-      const response = await axios.post("/api/users/getuserfromid", {
-        _id: user,
+      const response = await axios.post("/api/users/getuserfromusername", {
+        username: user,
       });
       console.log(response);
       setFollowers(response.data.data.followers);
@@ -49,7 +51,32 @@ const Follow = () => {
       console.log(error);
     }
   };
+  const removeFollowers = async(follow) => {
+    try {
+      const response = await axios.post("/api/users/removefollower",{_id:localStorage?.getItem("userId"),follow})
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const UnfollowUser = async (user) => {
+    try {
+      const response = await axios.post("/api/users/updatefollowers", {
+        _id: localStorage?.getItem("userId"),
+        follow:user,
+        add: false,
+      });
+      toast.success("User Unfollowed successfully")
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
+    (FollowOf === localStorage?.getItem("username")) ?
+    setIsMyProfile(true)
+    :
+    setIsMyProfile(false)
     getUserInfo(FollowOf);
   }, []);
 
@@ -73,7 +100,7 @@ const Follow = () => {
       <div>
         <div className="flex items-center py-4 px-2 space-x-4 shadow">
           <IoIosArrowBack className="text-2xl" onClick={() => router.back()} />
-          <p>User username</p>
+          <p>{FollowOf}</p>
         </div>
         <div className="flex items-center justify-around py-4">
           <div>
@@ -83,7 +110,7 @@ const Follow = () => {
             }}>
               <span></span>followers
             </p>
-            <div className="border border-black"></div>
+            {showFollowers && <div className="border border-black"></div>}
           </div>
           <div>
             <p className="cursor-pointer" onClick={()=>{
@@ -92,13 +119,13 @@ const Follow = () => {
             }}>
               <span></span>following
             </p>
-            <div className="border border-black"></div>
+            {showFollowing && <div className="border border-black"></div>}
           </div>
         </div>
         {showFollowers && (
-          <div className="followers-list">
+          <div className="followers-list text-center">
             {followers &&
-              allFollowers &&
+              allFollowers && 
               allFollowers?.map((follower, index) => {
                 return (
                   <div
@@ -113,14 +140,16 @@ const Follow = () => {
                         ></img>
                       </div>
                       <div className="text-sm">
-                        <p>{follower.username}</p>
+                        <p className="cursor-pointer" onClick={()=>router.push(`/profilepage/${follower.username}`)}>{follower.username}</p>
                         <p>{follower.name}</p>
                       </div>
                     </div>
                     <div>
-                      <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                      { isMyProfile ? <button onClick={()=>removeFollowers(follower._id)} className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                        Remove
+                      </button> : <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
                         Follow
-                      </button>
+                      </button> }
                     </div>
                   </div>
                 );
@@ -128,9 +157,9 @@ const Follow = () => {
           </div>
         )}
         {showFollowing && (
-          <div className="followings-list">
+          <div className="followings-list text-center">
             {following &&
-              allFolllowings &&
+              allFolllowings && 
               allFolllowings?.map((following, index) => {
                 return (
                   <div
@@ -145,21 +174,24 @@ const Follow = () => {
                         ></img>
                       </div>
                       <div className="text-sm">
-                        <p>{following.username}</p>
+                        <p className="cursor-pointer" onClick={()=>router.push(`/profilepage/${following.username}`)}>{following.username}</p>
                         <p>{following.name}</p>
                       </div>
                     </div>
                     <div>
-                      <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                    { isMyProfile ? <button onClick={()=>UnfollowUser(following._id)} className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
+                        Unfollow
+                      </button> : <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
                         Follow
-                      </button>
+                      </button> }
                     </div>
                   </div>
                 );
-              })}
+              }) }
           </div>
         )}
       </div>
+      <Toaster/>
     </>
   );
 };

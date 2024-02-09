@@ -40,3 +40,7 @@ done api and follow
 -> add unfollow function only from profile page
 -> add middlewares
 -> chatting from web socket
+
+
+-> remove folowers api
+-> set unfollow api on fronend
