@@ -9,7 +9,7 @@ import { MdOutlineGridOn } from "react-icons/md";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import { GoPerson } from "react-icons/go";
 import Link from "next/link";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import useSWR from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res)=>res.json())
@@ -25,11 +25,6 @@ const ProfilePage = () => {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [edit,setEdit] = useState(false)
-
-  // const { data , error } = useSWR('/api/users/getuserfromusername',fetcher)
-  // if(error) return <div>Failed to load</div>
-  // if(!data) return <div>Loading...</div>
-  // if(data) console.log(data)
 
   const pathname = usePathname();
   const username = pathname.split("page/").pop();
@@ -55,6 +50,34 @@ const ProfilePage = () => {
     getUserFromId();
     // getAllPosts()
   }, []);
+  const followUser = async (follow) => {
+    try {
+      const response = await axios.post("/api/users/updatefollowers", {
+        _id: localStorage?.getItem("userId"),
+        follow,
+        add: true,
+      });
+      toast.success(`You are now following ${userUserName}`)
+      getUserFromId()
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const UnfollowUser = async (user) => {
+    try {
+      const response = await axios.post("/api/users/updatefollowers", {
+        _id: localStorage?.getItem("userId"),
+        follow:user,
+        add: false,
+      });
+      toast.success(`${userUserName} Unfollowed successfully`)
+      getUserFromId()
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
     <div className="block md:hidden">
@@ -116,9 +139,21 @@ const ProfilePage = () => {
         </p>
       </div>
       <div className="flex px-2 my-3 justify-between">
-        <button className="bg-pink-300 text-white font-semibold py-1 px-10 rounded-md">
-          Follow
+        { userUserName === localStorage?.getItem("username") ?  
+        <button className="bg-pink-300 text-white font-semibold py-1 px- rounded-md px-6">
+          Edit Profile
         </button>
+        :
+        followers.includes(localStorage?.getItem("userId")) ?
+        <button className="bg-pink-300 text-white font-semibold py-1 px-10 rounded-md" onClick={()=>UnfollowUser(userId)}>
+        Unfollow
+        </button>
+        :
+        <button className="bg-pink-300 text-white font-semibold py-1 px-10 rounded-md" onClick={()=>followUser(userId)}>
+        Follow
+        </button>
+
+}
         <Link href={`/messagepage/${userUserName}`} className="bg-gray-200 font-semibold py-1 px-10 rounded-md">
           Message
         </Link>
