@@ -89,7 +89,7 @@ const ProfileFooter = () => {
   return (
     <>
       {isUpload && (
-        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[500px] fixed top-0 md:top-[-40px]">
+        <dialog className="modal mt-16 z-40 w-full flex justify-center  bg-black bg-opacity-20 h-[550px] fixed top-0 md:top-[-40px]">
           <div className="modal-box w-full flex  justify-center items-center">
             <form className="flex space-y-3 flex-col justify-center items-center bg-white px-2 py-5 w-5/6">
               <input
