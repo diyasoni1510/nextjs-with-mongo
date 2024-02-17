@@ -13,7 +13,7 @@ const Follow = () => {
   const [allFollowers, setAllFollowers] = useState([]);
   const [allFolllowings, setAllFolllowings] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [isMyProfile,setIsMyProfile] = useState()
+  const [isMyProfile, setIsMyProfile] = useState();
   const [showFollowers, setShowFollowers] = useState(true);
   const [showFollowing, setShowFollowing] = useState(false);
 
@@ -22,7 +22,6 @@ const Follow = () => {
       const response = await axios.post("/api/users/getuserfromusername", {
         username: user,
       });
-      console.log(response);
       setFollowers(response.data.data.followers);
       setFollowing(response.data.data.following);
     } catch (error) {
@@ -34,7 +33,6 @@ const Follow = () => {
       const response = await axios.post("/api/users/getuserfromid", {
         _id: user,
       });
-      console.log(response);
       setAllFollowers((prev) => [...prev, response.data.data]);
     } catch (error) {
       console.log(error);
@@ -45,45 +43,75 @@ const Follow = () => {
       const response = await axios.post("/api/users/getuserfromid", {
         _id: user,
       });
-      console.log(response);
       setAllFolllowings((prev) => [...prev, response.data.data]);
     } catch (error) {
       console.log(error);
     }
   };
-  const removeFollowers = async(follow) => {
+  const removeFollowers = async (follow) => {
     try {
-      const response = await axios.post("/api/users/removefollower",{_id:localStorage?.getItem("userId"),follow})
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const UnfollowUser = async (user) => {
-    try {
-      const response = await axios.post("/api/users/updatefollowers", {
+      const response = await axios.post("/api/users/removefollower", {
         _id: localStorage?.getItem("userId"),
-        follow:user,
-        add: false,
+        follow,
       });
-      toast.success("User Unfollowed successfully")
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
+  const UpdateFollower = async (user,add) => {
+    console.log(user,add)
+    // if(add === false){
+    try {
+      const response = await axios.post("/api/users/updatefollowers", {
+        _id: localStorage?.getItem("userId"),
+        follow: user,
+        add
+      });
+      toast.success("User Unfollowed successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  // }
+  // else if(add === true){
+  //   try {
+  //     const response = await axios.post("/api/users/updatefollowers", {
+  //       _id: localStorage?.getItem("userId"),
+  //       follow: user,
+  //       add
+  //     });
+  //     toast.success("User Unfollowed successfully");
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // else{
+  //   alert("add is", add)
+  // }
+  };
+  // const followUser = async (follow) => {
+  //   try {
+  //     const response = await axios.post("/api/users/updatefollowers", {
+  //       _id: localStorage?.getItem("userId"),
+  //       follow,
+  //       add: true,
+  //     });
+  //     toast.success(`You are now following ${userUserName}`)
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   useEffect(() => {
-    (FollowOf === localStorage?.getItem("username")) ?
-    setIsMyProfile(true)
-    :
-    setIsMyProfile(false)
+    FollowOf === localStorage?.getItem("username")
+      ? setIsMyProfile(true)
+      : setIsMyProfile(false);
     getUserInfo(FollowOf);
   }, []);
 
   useEffect(() => {
     followers &&
       followers.map((follower, index) => {
-        console.log(follower, index);
         getFollowerInfo(follower);
       });
   }, [followers]);
@@ -91,7 +119,6 @@ const Follow = () => {
   useEffect(() => {
     following &&
       following.map((following, index) => {
-        console.log(following, index);
         getFolloweingInfo(following);
       });
   }, [following]);
@@ -104,19 +131,25 @@ const Follow = () => {
         </div>
         <div className="flex items-center justify-around py-4">
           <div>
-            <p className="cursor-pointer" onClick={()=>{
-              setShowFollowing(!showFollowing)
-              setShowFollowers(!showFollowers)
-            }}>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                setShowFollowing(!showFollowing);
+                setShowFollowers(!showFollowers);
+              }}
+            >
               <span></span>followers
             </p>
             {showFollowers && <div className="border border-black"></div>}
           </div>
           <div>
-            <p className="cursor-pointer" onClick={()=>{
-              setShowFollowing(!showFollowing)
-              setShowFollowers(!showFollowers)
-            }}>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                setShowFollowing(!showFollowing);
+                setShowFollowers(!showFollowers);
+              }}
+            >
               <span></span>following
             </p>
             {showFollowing && <div className="border border-black"></div>}
@@ -125,7 +158,7 @@ const Follow = () => {
         {showFollowers && (
           <div className="followers-list text-center">
             {followers &&
-              allFollowers && 
+              allFollowers &&
               allFollowers?.map((follower, index) => {
                 return (
                   <div
@@ -140,16 +173,39 @@ const Follow = () => {
                         ></img>
                       </div>
                       <div className="text-sm">
-                        <p className="cursor-pointer" onClick={()=>router.push(`/profilepage/${follower.username}`)}>{follower.username}</p>
+                        <p
+                          className="cursor-pointer"
+                          onClick={() =>
+                            router.push(`/profilepage/${follower.username}`)
+                          }
+                        >
+                          {follower.username}
+                        </p>
                         <p>{follower.name}</p>
                       </div>
                     </div>
                     <div>
-                      { isMyProfile ? <button onClick={()=>removeFollowers(follower._id)} className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                        Remove
-                      </button> : <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                        Follow
-                      </button> }
+                      {isMyProfile ? (
+                        <button
+                          onClick={() => removeFollowers(follower._id)}
+                          className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md"
+                        >
+                          Remove
+                        </button>
+                      ) : JSON.parse(
+                          localStorage.getItem("user")
+                        ).following.includes(following._id) ? (
+                        <button
+                          onClick={() => UpdateFollower(follower._id,false)}
+                          className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md"
+                        >
+                          Unfollow
+                        </button>
+                      ) : (
+                        <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md" onClick={()=>{ UpdateFollower(follower._id,true) }}>
+                          Follow
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -159,7 +215,7 @@ const Follow = () => {
         {showFollowing && (
           <div className="followings-list text-center">
             {following &&
-              allFolllowings && 
+              allFolllowings &&
               allFolllowings?.map((following, index) => {
                 return (
                   <div
@@ -174,24 +230,39 @@ const Follow = () => {
                         ></img>
                       </div>
                       <div className="text-sm">
-                        <p className="cursor-pointer" onClick={()=>router.push(`/profilepage/${following.username}`)}>{following.username}</p>
+                        <p
+                          className="cursor-pointer"
+                          onClick={() =>
+                            router.push(`/profilepage/${following.username}`)
+                          }
+                        >
+                          {following.username}
+                        </p>
                         <p>{following.name}</p>
                       </div>
                     </div>
                     <div>
-                    { isMyProfile ? <button onClick={()=>UnfollowUser(following._id)} className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                        Unfollow
-                      </button> : <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md">
-                        Follow
-                      </button> }
+                      {isMyProfile ||
+                      following.followers.includes(localStorage?.getItem("userId")) ? (
+                        <button
+                          onClick={() => UpdateFollower(following._id,false)}
+                          className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md"
+                        >
+                          Unfollow
+                        </button>
+                      ) : (
+                        <button className="bg-pink-300 text-white font-semibold py-1 px-5 text-sm rounded-md" onClick={()=> UpdateFollower(following._id,true)}>
+                          Follow
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
-              }) }
+              })}
           </div>
         )}
       </div>
-      <Toaster/>
+      <Toaster />
     </>
   );
 };
