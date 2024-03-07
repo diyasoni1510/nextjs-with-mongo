@@ -34,7 +34,7 @@ const StorySection = () => {
   },[])
 
   return (
-    <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md">
+    <div className="w-full border border-b-gray-400 md:border-gray-400 md:rounded-md ">
       <div className="flex p-3 space-x-6 overflow-x-scroll">
         {allUsers?.map((user) => {
           return (
@@ -48,7 +48,7 @@ const StorySection = () => {
               {openModal === user._id && (
                 <dialog
                   id={user._id}
-                  className="modal z-40 w-full flex justify-center  bg-black bg-opacity-50 h-screen absolute top-0 md:top-[-40px] items-center"
+                  className="modal z-40 w-full flex justify-center  bg-black bg-opacity-50 h-screen absolute top-0 md:top-[-40px]"
                 >
                   <div className="modal-box">
                     <div className="h-[70vh] w-[300px]">

@@ -6,6 +6,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setLoggedUser } from "../features/LoggedUserSlice";
 
 const schema = Yup.object().shape({
   username: Yup.string().required(),
@@ -13,6 +15,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required().min(7),
 });
 const SignupPage = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,10 +34,12 @@ const SignupPage = () => {
         if (response.data.status === 201) {
           setLoading(false)
           toast.success("User Signed up succesfully");
-          localStorage.setItem("username", response.data.data.username);
+          console.log(response.data.data._id)
+          dispatch(setLoggedUser(response.data.data._id))
+        //   localStorage.setItem("username", response.data.data.username);
           localStorage.setItem("userId", response.data.data._id);
-        localStorage.setItem("user", JSON.stringify(response.data.data));
-          router.push(`/profile/${username}`);
+        // localStorage.setItem("user", JSON.stringify(response.data.data));
+        //   router.push(`/profile/${username}`);
         } else {
           toast.error("User already exists");
         }

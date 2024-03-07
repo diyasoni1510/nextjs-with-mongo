@@ -19,7 +19,7 @@ const ProfileFooter = () => {
   const [picUploading, setPicUploading] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
   const pathname = usePathname();
-  // const username = pathname.split("profile/").pop();
+  const username = pathname.split("profile/").pop();
   const [footerSlider, openFooterSlider] = useState(false);
   const [post, setPost] = useState();
   const [caption, setCaption] = useState();
