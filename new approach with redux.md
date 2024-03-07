@@ -1,0 +1,1 @@
+1. Dont redirect links instead use components hide and show
