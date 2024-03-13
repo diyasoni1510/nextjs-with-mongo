@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import LogInOrSignuppage from "./loginorsignuppage/page"
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import Profile from "./profile/page"
+import Profile from "./Components/profile/page"
 
 const index = () => {
   const LoggedUser = useSelector((state) => state.LoggedUser);

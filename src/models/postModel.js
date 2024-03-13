@@ -3,7 +3,6 @@ import { date } from "yup";
 
 const postSchema = new mongoose.Schema({
   userId: String,
-  username :String,
   post: String,
   caption: String,
   likes: [{ type: String}],

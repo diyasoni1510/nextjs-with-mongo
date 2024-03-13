@@ -10,9 +10,11 @@ import { FiUpload } from "react-icons/fi";
 import axios from "axios";
 import { mutate } from "swr";
 import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 
 const ProfileFooter = () => {
+  const LoggedUser = useSelector((state) => state.LoggedUser);
   const router = useRouter();
   const [isUpload, setIsUpload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ const ProfileFooter = () => {
           "Cache-Control": "no-cache",
         },
       });
-      localStorage.removeItem("username");
+      // localStorage.removeItem("username");
       localStorage.removeItem("userId");
       localStorage.removeItem("user");
       setLogoutLoading(false);
@@ -51,7 +53,7 @@ const ProfileFooter = () => {
         post,
         caption,
         userId: JSON.parse(localStorage.getItem("user"))._id,
-        username: localStorage.getItem("username"),
+        // username: localStorage.getItem("username"),
       });
       console.log(response);
       setLoading(false);
@@ -188,7 +190,7 @@ const ProfileFooter = () => {
       </div>
       {footerSlider === true && (
         <div className="fixed bottom-10 border-t-2 w-full bg-white flex flex-col space-y-3 py-2 ">
-          <button onClick={() => router.push(`/setdetails/${username}`)}>
+          <button onClick={() => router.push(`/setdetails/${LoggedUser}`)}>
             Edit profile
           </button>
           <button

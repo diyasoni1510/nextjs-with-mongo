@@ -7,11 +7,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-const schema = Yup.object().shape({
-  username: Yup.string().required(),
-  password: Yup.string().required().min(7),
-  pic: Yup.mixed().required()
-});
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
